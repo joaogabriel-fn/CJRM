@@ -1,6 +1,6 @@
 # **CJRM** | Etapa 02 - Controle de Fluxo
 
-* ## For e While loops
+## For e While loops
 
 São utilizados para repetir um bloco de código até que a condição seja exigida. Para realizar a repetição, utilizamos uma variável normalmente referenciada como i.
 
@@ -42,7 +42,7 @@ for (let i = 0; i < brazilianCities.length; i++) {
 * A condição de execução do loop será o tamanho do array
 * A variável i será utilizada para referenciar o índice do array, como por exemplo em brazilianCities[i]
 
-* ## If, Else e Else if statements
+## If, Else e Else if statements
 
 * ### If
 
@@ -127,6 +127,72 @@ if (!isUserLoggedIn) {
 
 O bloco if será executado, pois mesmo a const resultar em false, na sua validação dentro do if foi inserido o operador !, tornando ela not false, ou seja, true.
 
-* ### Break, Continue e Switch
+## Break e Continue
 
+* ### Break
 
+A palavra-chave break é utilizada para interromper um loop antes que sua condição seja atingida, pode ser utilizada por exemplo dentro de um if, fazendo com que o loop seja interrompido ao atingir certa condição
+
+```js
+const brazilianCities = ['Sao Paulo', 'Rio de Janeiro', 'Curitiba']
+
+for (let i = 0; i < brazilianCities.length; i++) {
+    if (brazilianCities[i] === 'Rio de Janeiro') {
+        break
+    }
+}
+```
+
+O loop será interrompido antes de chegar na cidade Curitiba, já que se o item do array for igual a rio de janeiro, a iteração irá parar.
+
+* ### Continue
+
+A palavra-chave continue é utilizada para dar continuidade no loop imediatamente, podendo pular partes do código que estavam contidas dentro do loop.
+Podemos utilizar por exemplo para exibir no console apenas os número pares de um array:
+
+```js
+const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] % 2 === 1) {
+        continue
+    }
+    console.log(numbers[i])
+}
+```
+
+No código acima, caso o número seja identificado como ímpar pela validação do If, sua iteração será imediatamente finalizada, ignorando o console.log abaixo do If.
+
+## Switch
+
+A condicional switch é utilizada para realizar comparações, podendo simplificar situações onde o aninhamento de else ifs tornaria o código pouco legível.
+
+Abaixo temos um código para verificar um valor utilizando If:
+```js
+const a = 1
+
+if (a === 0) {
+  console.log(`O valor de "a" é ${a}`)
+} else if (a === 1) {
+  console.log(`O valor de "a" é ${a}`)
+} else {
+  console.log('O valor de "a" é qualquer número, exceto 0 e 1')
+}
+```
+
+Utilizando switch, temos:
+
+```js
+const a = 1
+
+switch (a) {
+    case 0:
+        console.log(`o valor de "a" é ${a}`)
+        break
+    case 1:
+        console.log(`o valor de "a" é ${a}`)
+        break
+    default:
+        console.log(`o valor de "a" é qualquer número, exceto 0 e 1`)
+}
+```
