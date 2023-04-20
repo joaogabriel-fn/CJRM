@@ -13,7 +13,7 @@
   "Minhas 3 séries favoritas são: SÉRIE_01, SÉRIE_02 e SÉRIE_03."
 */
 
-const my3FavoriteShows = ['Ola']
+const my3FavoriteShows = ['Ola', 'Breaking Bad']
 
 /*
   02 - Comente o console.log() acima e:
