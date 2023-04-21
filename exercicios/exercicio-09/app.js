@@ -24,9 +24,9 @@ const convertToString = value => String(value)
     recebida por parâmetro possui.
 */
 
-const characterCounter = string => string.length
+const getStringLength = string => string.length
 
-// console.log(characterCounter('teste'))
+// console.log(getStringLength('teste'))
 
 /*
   03
@@ -38,9 +38,9 @@ const characterCounter = string => string.length
   "CHOCOTONE E OVO DE PÁSCOA JUNTOS NO MERCADO EM PLENO FEVEREIRO"
 */
 
-const lowerCaseString = string => string.toLowerCase()
+const convertToLowerCase = string => string.toLowerCase()
 
-// console.log(lowerCaseString('CHOCOTONE E OVO DE PÁSCOA JUNTOS NO MERCADO EM PLENO FEVEREIRO'))
+// console.log(convertToLowerCase('CHOCOTONE E OVO DE PÁSCOA JUNTOS NO MERCADO EM PLENO FEVEREIRO'))
 
 /*
   04
@@ -49,9 +49,9 @@ const lowerCaseString = string => string.toLowerCase()
   - Ao ser invocada, a função deve retornar o index do caractere na string.
 */
 
-const stringIndex = (character, string) => string.indexOf(character)
+const getIndex = (character, string) => string.indexOf(character)
 
-// console.log(stringIndex('s', 'teste'))
+// console.log(getIndex('s', 'teste'))
 
 /*
   05
@@ -60,11 +60,11 @@ const stringIndex = (character, string) => string.indexOf(character)
     passado por argumento existe no array (também passado por argumento).
 */
 
-const arrayCheck = (array, item) => array.includes(item)
+const isItemIncluded = (array, item) => array.includes(item)
 
 const citiesArray = ['Curitiba', 'São Paulo', 'Rio de Janeiro']
 
-// console.log(arrayCheck(citiesArray, 'Curitiba'))
+// console.log(isItemIncluded(citiesArray, 'Curitiba'))
 
 /*
   06
@@ -73,11 +73,11 @@ const citiesArray = ['Curitiba', 'São Paulo', 'Rio de Janeiro']
     argumentos em sua invocação;
 */
 
-const countryArray = ['Brasil', 'Portugal', 'China']
+const countriesArray = ['Brasil', 'Portugal', 'China']
 
 const arrayConcat = (firstArray, secondArray) => firstArray.concat(secondArray)
 
-// console.log(arrayConcat(citiesArray, countryArray))
+// console.log(arrayConcat(citiesArray, countriesArray))
 
 /*
   07
@@ -100,11 +100,9 @@ const removeLastItem = array => {
     invocação é null.
 */
 
-const nullVerification = value => value === null
+const isNull = value => value === null
 
-const nullValue = null
-
-// console.log(nullVerification(nullValue))
+// console.log(isNull(null))
 
 /*
   09
@@ -117,15 +115,27 @@ const nullValue = null
     foi exibido.
 */
 
-const myFunc = callback => {
-  const value = 'Joao'
+// const myFunc = callback => {
+//   const value = 'Joao'
 
-  callback(value)
-}
+//   callback(value)
+// }
 
 // myFunc((string) => {
 //   console.log(string)
 // })
+
+// CJRM
+
+const invokeCallback = callback => {
+  callback()
+}
+
+const logName = () => {
+  console.log('Joao Gabriel')
+}
+
+// invokeCallback(logName)
 
 /*
   10
@@ -146,6 +156,16 @@ const myFunc = callback => {
 //   console.log(number * 3)
 // })
 
+// CJRM
+
+const callCallback = (value, callback) => {
+  return callback(value)
+}
+
+const triple = number => number*33
+
+// console.log(callCallback(3, triple))
+
 /*
   11
 
@@ -155,11 +175,16 @@ const myFunc = callback => {
   "O Xº item do array [X, X, X] é X."
 */
 
-const numbers = [1, 2, 3]
+const numbers = [1, 2 , 3]
 
-// numbers.forEach((number, index, array) => {
-//   console.log(`O ${index + 1}º item do array [${array}] é ${number}.`)
-// })
+const showNumbersInfo = (item, index, array) => {
+  const itemPosition = index + 1
+  const itens = array.join(', ')
+
+  console.log(`O ${itemPosition}º item do array [${itens}] é ${item}.`)
+}
+
+// numbers.forEach(showNumbersInfo)
 
 /*
   12
@@ -176,9 +201,11 @@ let lettersCopy = []
 //   lettersCopy.push(letters[i])
 // }
 
-letters.forEach((letter) => {
+const copyLetters = letter => {
   lettersCopy.push(letter)
-})
+}
+
+letters.forEach(copyLetters)
 
 // console.log(lettersCopy)
 
@@ -211,9 +238,11 @@ const reviews = [
 
 let paragraphs = ''
 
-reviews.forEach((review) => {
+const createParagraph = (review) => {
   paragraphs += `<p>${review}</p>`
-})
+}
+
+reviews.forEach(createParagraph)
 
 section.innerHTML = paragraphs
 
@@ -238,9 +267,27 @@ section.innerHTML = paragraphs
     pessoas já mencionadas no início da mensagem).
 */
 
-let likesArray = []
+const likesArray = ['Joao', 'Giulia', 'Elis']
 
-function likesFunc (array=[]) {
+const postLikes = array => {
+  const arrayLength = array.length
+  const firstName = array[0]
+  const secondName = array[1]
+  const thirdName = array[2]
+  const totalLikesMinusTwo = arrayLength - 2
+
+  switch (arrayLength) {
+    case 0:
+      return 'Ninguém curtiu isso'
+    case 1:
+      return `${firstName} curtiu isso`
+    case 2:
+      return `${firstName} e ${secondName} curtiram isso`
+    case 3:
+      return `${firstName}, ${secondName} e ${thirdName} curtiram isso`
+    default:
+      return `${firstName}, ${secondName} e mais ${totalLikesMinusTwo} pessoas curtiram isso`
+  }
 }
 
-console.log(likesFunc())
+// console.log(postLikes(likesArray))
