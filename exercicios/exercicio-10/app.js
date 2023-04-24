@@ -10,7 +10,7 @@
   - Exiba o objeto no console.
 */
 
-const cat = {
+let cat = {
   name: 'Marcelo',
   age: 1,
   color: 'Black and White',
@@ -19,6 +19,7 @@ const cat = {
     return 'ueeeum'
   }
 }
+
 // console.log(cat)
 
 /*
@@ -39,7 +40,6 @@ const cat = {
 */
 
 // cat.age += 2
-
 // console.log(cat.age)
 
 /*
@@ -95,17 +95,19 @@ const isObject = value => typeof value === 'object'
   "A soma das idades de NOME_DO_GATO e NOME_DO_CACHORRO é RESULTADO_DA_SOMA."
 */
 
-const dog = {
+let dog = {
   name: 'Belinha',
   age: 18,
   color: 'Brown',
   bestFriends: ['Elis', 'Thomas'],
-  sound: function () {
-    return 'auau'
-  }
+  sound: () => 'auau'
 }
 
-const animalsAgeSum = (firstObject=0, secondObject=0) => firstObject.age + secondObject.age
+const animalsAgeSum = (catObject=0, dogObject=0) => {
+  const ageSum = catObject.age + dogObject.age
+  const ageSumString = `A soma das idades de ${catObject.name} e ${dogObject.name} é ${ageSum}.`
+  return ageSumString
+}
 
 // console.log(animalsAgeSum(cat, dog))
 
@@ -117,9 +119,9 @@ const animalsAgeSum = (firstObject=0, secondObject=0) => firstObject.age + secon
   - Como você refatoraria esta função?
 */
 
-let suvArray = ['Honda HR-V','Jeep Renegade','Ford EcoSport','Hyundai iX35']
+// const suvArray = ['Honda HR-V','Jeep Renegade','Ford EcoSport','Hyundai iX35']
 
-const isAnSUV = (carArray, car) => carArray.includes(car)
+// const isAnSUV = (carArray, car) => carArray.includes(car)
 
 // console.log(isAnSUV(suvArray, 'Honda Civic'))
 // console.log(isAnSUV(suvArray, 'Ford EcoSport'))
@@ -164,3 +166,17 @@ const typeOfValue = type => {
       return console.log('Valor não encontrado no objeto')
   }
 }
+
+// CJRM
+
+const getTypeDefinition = type => {
+  return {
+    null: 'Seta, explicitamente, uma variável sem valor.',
+    undefined: 'Representa um valor não-setado.',
+    object: 'Arrays, Datas, Objetos literais, Funções, etc.'
+  }[type]
+}
+
+console.log(getTypeDefinition('null'))
+console.log(getTypeDefinition('undefined'))
+console.log(getTypeDefinition('object'))

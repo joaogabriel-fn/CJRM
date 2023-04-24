@@ -74,4 +74,55 @@ let user = {
 user.login()                // Retorna 'Usuário logado'
 ```
 
+## Variáveis e escopo de bloco
 
+* ### O que são escopos?
+Escopos são a área em que uma variável está disponível para uso. Quando declaradas fora de blocos de códigos, elas são definidas para o escopo global, ou seja, pode ser acessada/usada em qualquer lugar do arquivo, tanto dentro quanto fora de blocos de códigos.
+
+```js
+let age = 31
+
+if (true) {
+    console.log(`dentro do 1° bloco de código: ${age}`)
+}
+
+console.log(`dentro do 1° bloco de código: ${age}`)
+```
+
+O código acima retornará no console tanto o console.log dentro do bloco do if, quanto do que está fora, pois a variável foi definida para o escopo global. Caso o valor da variável seja alterado dentro do bloco de código, ele será alterado para o escopo global também.
+
+Entretanto, é possível declarar uma variável de mesmo nome dentro de um bloco de código, desta forma o console.log do bloco if retornará o valor que foi declarado dentro do bloco, já o outro, retornará o valor da variável de escopo global.
+
+```js
+let age = 31
+
+if (true) {
+    let age = 41
+    console.log(`dentro do 1° bloco de código: ${age}`)
+}
+
+console.log(`dentro do 1° bloco de código: ${age}`)
+```
+
+O código acima irá retornar no console primeiro 41, valor definido dentro do bloco if, depois 31, valor definido no escopo global.
+
+```js
+let age = 31
+
+if (true) {
+    let age = 41
+    console.log(`dentro do 1° bloco de código: ${age}`)
+
+    if (true) {
+        console.log(`dentro do 2° bloco de código: ${age}`)
+    }
+}
+
+console.log(`dentro do 1° bloco de código: ${age}`)
+```
+
+Dentro do secundo bloco de código, a variável considerada será a declarada mais próxima, ou seja, irá retornar 41 no código acima. Porém, é possível declarar uma nova variável dentro deste bloco aninhado, assim este valor será considerado.
+
+As variáveis declaradas com a key word "var" *ignoram* escopo de blocos, sendo assim, variáveis declaradas dentro do escopo de bloco podem ser utilizadas no escopo global.
+
+* ### Key word this
