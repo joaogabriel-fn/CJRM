@@ -5,6 +5,14 @@
   - Ela deve ter um escopo global.
 */
 
+// const myName = 'Joao'
+
+// for (let i = 0; i < 5; i++) {
+//   console.log(`Dentro do bloco de código: ${myName}`)
+// }
+
+// console.log(`Fora do bloco de código: ${myName}`)
+
 /*
   02
 
@@ -18,6 +26,17 @@
     defined" será exibido no console;
   - Você sabe por que isso aconteceu?
 */
+
+// const myAge = () => {
+//   let age = 22
+//   console.log(age)
+// }
+
+// console.log(age)
+
+// myAge()
+
+/* O erro se deu por conta do escopo da variável, pois ela foi declarada dentro de um bloco de código, portanto só está definida para tal.
 
 /*
   03
@@ -37,11 +56,40 @@
       "O NOME_DO_CARRO está disponível nas cores COR_01, COR_02 e COR_03".
 */
 
+let car = {
+  name: 'C4 Pallas',
+  brand: 'Citroen',
+  colors: ['Black', 'Grey', 'Beige'],
+  isRunning: false,
+  run () {
+    this.isRunning = true
+    return `O ${this.name} está em movimento.`
+  },
+  stop () {
+    this.isRunning = false
+    return `O ${this.name} está parado.`
+  },
+  getColorsMessage () {
+    const lastItem = this.colors[this.colors.length - 1]
+    const colors = this.colors.join(', ').replace(`, ${lastItem}`, ` e ${lastItem}`)
+
+    return `O ${this.name} está disponível nas cores: ${colors}`
+    // this.colors.forEach(color => {
+    //   console.log(color)
+    // })
+  }
+}
+
+console.log(car.getColorsMessage())
+
 /*
   04
 
   - Faça o carro andar e exiba no console se ele realmente está em movimento.
 */
+
+// console.log(car.run())
+// console.log(car.isRunning)
 
 /*
   05
@@ -49,11 +97,17 @@
   - Faça o carro parar e exiba no console se ele realmente está parado.
 */
 
+// console.log(car.stop())
+// console.log(car.isRunning)
+
+
 /*
   06
 
   - Exiba, no console, a mensagem com as cores do carro.
 */
+
+// console.log(car.getColorsMessage())
 
 /*
   07
@@ -61,3 +115,5 @@
   - Exiba, no console, a mensagem "O carro é um MARCA_DO_CARRO NOME_DO_CARRO";
   - Utilize a notação de colchetes para acessar as propriedades do carro.
 */
+
+console.log(`O carro é um ${car['brand']} ${car['name']}`)

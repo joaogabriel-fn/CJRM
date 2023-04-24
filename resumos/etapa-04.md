@@ -123,6 +123,74 @@ console.log(`dentro do 1° bloco de código: ${age}`)
 
 Dentro do secundo bloco de código, a variável considerada será a declarada mais próxima, ou seja, irá retornar 41 no código acima. Porém, é possível declarar uma nova variável dentro deste bloco aninhado, assim este valor será considerado.
 
-As variáveis declaradas com a key word "var" *ignoram* escopo de blocos, sendo assim, variáveis declaradas dentro do escopo de bloco podem ser utilizadas no escopo global.
+As variáveis declaradas com a keyword "var" **ignoram** escopo de blocos, sendo assim, variáveis declaradas dentro do escopo de bloco podem ser utilizadas no escopo global.
 
-* ### Key word this
+* ### Keyword this
+
+```js
+let user = {
+    name: 'Joao',
+    age: 22
+    email: 'joaogabriel@hotmail.com',
+    city: 'Curitiba'
+    blogPosts: ['Dano ou CDR na matchup irelia x fiora', 'Slow fight ou hard engage?']
+    login: function () {
+        console.log('Usuário logado')
+    }
+    logout: function () {
+        console.log('Usuário deslogado')
+    }
+}
+```
+
+Dado o código acima, imagine se quisessemos exibir a propriedade 'blogPosts', no console. Para isso, pensaríamos inicialmente em criar um método que exibiria essa informação no console, como no exemplo abaixo:
+
+```js
+let user = {
+    name: 'Joao',
+    age: 22
+    email: 'joaogabriel@hotmail.com',
+    city: 'Curitiba'
+    blogPosts: ['Dano ou CDR na matchup irelia x fiora', 'Slow fight ou hard engage?']
+    login: function () {
+        console.log('Usuário logado')
+    }
+    logout: function () {
+        console.log('Usuário deslogado')
+    }
+    logBlogPosts: function () {
+        console.log(blogPosts)
+    }
+}
+```
+
+O código acima resultaria num erro, acusando que blogPosts não está definido. Para acessarmos uma propriedade que está dentro do obj, precismos utilizar a keyword **this**.
+
+```js
+  let user = {
+  name: 'Joao',
+  age: 22,
+  email: 'joaogabriel@hotmail.com',
+  city: 'Curitiba',
+  blogPosts: ['Dano ou CDR na matchup irelia x fiora', 'Slow fight ou hard engage?'],
+  login: function () {
+    console.log('Usuário logado')
+  },
+  logout: function () {
+    console.log('Usuário deslogado')
+  },
+  logBlogPosts () {
+    console.log(`${this.name} escreveu os seguintes posts:`)
+      
+    console.log(this.blogPosts.forEach(post => {
+        console.log(post)
+    }))
+  }
+}
+```
+
+A keyword this é um **objeto de contexto**, ou seja, ele representa o contexto no qual o código atual está sendo executado. O valor dele pode ser alterado de acordo com o contexto que é referenciado.
+
+Caso this seja referenciado no escopo global, irá retornar o objeto window.
+
+Quando o this é declarado num método utilizando arrow function, ele não assume o contexto do bloco de código, por isso é necessário utilizar function declaration para que funcione corretamente.
