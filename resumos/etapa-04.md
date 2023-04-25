@@ -194,3 +194,57 @@ A keyword this é um **objeto de contexto**, ou seja, ele representa o contexto 
 Caso this seja referenciado no escopo global, irá retornar o objeto window.
 
 Quando o this é declarado num método utilizando arrow function, ele não assume o contexto do bloco de código, por isso é necessário utilizar function declaration para que funcione corretamente.
+
+* ### Objetos em arrays
+
+É possível inserir objetos dentro de arrays, mesmo sendo dentro de outros objetos. Podemos exemplificar estes casos com o objeto user que definimos anteriormente.
+
+```js
+  let user = {
+  name: 'Joao',
+  age: 22,
+  email: 'joaogabriel@hotmail.com',
+  city: 'Curitiba',
+  blogPosts: [
+    {title: 'Dano ou CDR na matchup irelia x fiora', likes: 30},
+    {title: 'Slow fight ou hard engage?', likes: 50}
+  ],
+  login () {
+    console.log('Usuário logado')
+  },
+  logout () {
+    console.log('Usuário deslogado')
+  },
+  logBlogPosts () {
+    console.log(`${this.name} escreveu os seguintes posts:`)
+
+    this.blogPosts.forEach(post => {
+      console.log(post.title, post.likes)
+    })
+  }
+}
+```
+
+* ### Objeto math
+
+Em JavaSript, existe um objeto nativo chamado math, podemos exibi-lo no console para vermos os métodos que são possíveis invocarmos com ele.
+
+```js
+console.log(Math)
+```
+
+Um dos métodos que podemos utilizar é o round:
+
+```js
+const area = 7.7
+
+console.log(Math.round(area))
+```
+
+Existem diversos métodos para arredondamento, como o round, floor, ceil e trunc.
+
+É possível também gerar números aleatórios com um método do obj Math:
+
+```js
+const randomNumber = Math.random()
+```
