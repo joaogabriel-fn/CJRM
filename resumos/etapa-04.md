@@ -248,3 +248,57 @@ Existem diversos métodos para arredondamento, como o round, floor, ceil e trunc
 ```js
 const randomNumber = Math.random()
 ```
+
+Este método irá retornar um número aleatório entre 0 e 1.
+
+Podemos também gerar um número aleatório de 0 a 100 com o seguinte método
+
+```js
+console.log(Math.round(randomNumber * 100))
+```
+
+* ### Tipos primitivos e tipo de de referência
+
+#### Tipos Primitivos
+
+* Numbers
+* Strings
+* Booleans
+* Null
+* Undefined
+* Symbol
+* BigInt
+
+#### Tipos de Referência
+
+* Todos os Tipos de Objetos
+  * Objetos literais
+  * Arrays
+  * Funções
+  * Datas
+  * Todos os outros objetos
+
+A diferença entre estes 2 tipos, é a forma que eles são armazenados na memória pelo JavaScript. 
+
+Quando definimos um tipo primitivo, ele é armazenado numa stack. A stack é como se fosse uma "pilha" de valores, onde podemos acessá-los de forma rápida, entretanto, o espaço dela é pequeno.
+
+Quando definimos um tipo de referência, ele é armazenado no heap.
+
+Para acessarmos os valores armazenados na **stack**, referenciamos o nome da variável declarada, já para acessarmos os valores armazenados no **heap**, referenciamos o nome da variável que irá ser atribuída a um **pointer** dentro da **stack**. Esse **pointer** irá apontar para o tipo de referência armazenado no **heap**.
+
+Caso uma variável de tipo primitivo seja declarada, logo após seja feita um cópia dela referenciando em outra variável de outro nome, os valores continuam sendo armazenados separadamente.
+
+```js
+let scoreOne = 50           // Variável de tipo primitivo "number"
+let scoreTwo = scoreOne     // scoreTwo recebe o valor de scoreOne e armazena separadamente na stack
+scoreOne = 100              // Caso o valor da scoreOne seja alterado após a declaração de scoreTwo, o valor de scoreTwo continuará sendo 50
+```
+
+No caso dos tipos de referência, se uma variável for copiada para outra de nome diferente, os ponteiros armazenados na stack estarão apontando para o mesmo objeto, sendo assim, tudo que for modificado na em alguma das variáveis, será também modificado na outra. Portanto, quando copiamos um tipo de referência para outra variável, estamos apenas copiando o ponteiro armazenado na stack, fazendo com que todas as variáveis copiadas apontem para o mesmo objeto.
+
+```js
+let userOne = {name:'Joao', score:100}
+let userTwo = userOne
+UserOne.score = 50
+// userTwo também irá replicar a alteração feita em userOne, ou seja, o valor do score será de 50 para as 2 variáveis
+```
