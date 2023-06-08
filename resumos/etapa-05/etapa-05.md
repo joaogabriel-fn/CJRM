@@ -218,7 +218,7 @@ paragraphs.forEach(paragraph => {
 
   paragraph.setAttribute('class', 'success')    // Altera o valor da classe para "success"
 
-  console.log(paragraph.getAttribute('class'))  // Retorna o valor da classe do elemento ("success) 
+  console.log(paragraph.getAttribute('class'))  // Retorna o valor da classe do elemento ("success") 
   ```
 
   É possível também adicionar atributos novos ao elemento selecionado, não apenas modificar atributos já existentes.
@@ -264,3 +264,44 @@ paragraphs.forEach(paragraph => {
   ```js
   title.style.margin = ''
   ```
+
+* ### Obtendo, adicionando, removendo e alternando classes CSS
+
+  Para obtermos um "lista" de classes que o elemento HTML que selecionamos, utilizamos a propriedade classList, assim é retornado um DOMTokenList com o índice de cada classe do elemento e seu nome.
+
+  A partir do momento que acessamos a classList do elemento, podemos encadear o método .add(), onde o argumento dele será o nome da classe que desejamos adicionar
+
+  ```js
+  const paragraph = document.querySelector('p')
+
+  paragraph.classList.add('teste')   // Será adicionado ao elemento que selecionamos a classe "teste"
+
+  ```
+
+  Para a remoção desta classe, encadeamos o método .remove()
+
+  ```js
+  paragraph.classList.remove('teste')
+  ```
+
+  No exemplo abaixo, vamos verificar numa série de elemento de tag <p> se eles contém o texto "error" ou "success", a partir disto, iremos adicionar classes aos elementos.
+
+  ```js
+  const paragraphs = document.querySelectorAll('p')
+  const addClass = paragraph => {
+      const paragraphIncludesError = paragraph.innerText.includes('error')
+      const paragraphIncludesSuccess = paragraph.innerText.includes('success')
+
+      if (paragraphIncludesError) {
+          paragraph.classList.add('error')
+      } else if (paragraphIncludesSuccess) {
+          paragraph.classList.add('success')
+      }
+  }
+
+  paragraphs.forEach(paragraph => {
+      addClass(paragraph)
+  })
+  ```
+
+  Para alternarmos as classes de um elemento, utilizamos a propriedade .toggle() da classList. Esta propriedade irá criar a classe passada como argumento caso o elemento não tenha a classe, mas caso o elemento já tenha, irá remove-la.
