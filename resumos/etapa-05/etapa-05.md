@@ -305,3 +305,91 @@ paragraphs.forEach(paragraph => {
   ```
 
   Para alternarmos as classes de um elemento, utilizamos a propriedade .toggle() da classList. Esta propriedade irá criar a classe passada como argumento caso o elemento não tenha a classe, mas caso o elemento já tenha, irá remove-la.
+
+
+* ### Parents, children e siblings
+
+  A relação dos elementos dentro do DOM é análoga ao de uma árvore, onde existem elementos pais que originam filhos, e estes filhos quando estão dentro da mesma hierarquia são irmãos. Por exemplo, quando temos um root node HTML que ramifica entre head e body, que originam respectivamente um title e um H1, estes elementos serão serão irmãos, mesmo com "pais" diferentes.
+
+  Esta relação entre os elementos facilita a forma que podemos selecionar elementos dentro do DOM, utilizando por exemplo a propriedade .children, que retornará uma HTML Collection com todos os elementos filhos.
+
+  Como uma HTML Collection não é iterável por meio de forEach(), podemos converte-lo num array através da função construtora Array.from(), assim será possível iterar pelos elementos. (Esta função não é destrutiva)
+
+  No exemplo abaixo, iremos adicionar aos elementos filhos do article a classe "article-element" através do forEach():
+
+  ```js
+  const article = document.querySelector('article')
+
+  console.log(article.children)               //Retorna uma HTMLCollection
+  console.log(Array.from(article.children))   //Retorna o array com os elementos da HTML collection
+
+  Array.from(article.children).forEach(element => {
+  element.classList.add('article-element')
+  })
+  ```
+
+  Para descobrirmos o pai de um elemento, podemos utilizar a propriedade .parentElement, onde será retornado no console o elemento HTML pai.
+
+  Podemos também encadear outras vezes a propriedade .parentElement, afim de descobrir o "avô" do elemento.
+
+  É possível percorrer entre os elementos irmãos através das propriedades .nextElementSibling e .previousElementSibling
+
+  ```js
+  const title = document.querySelector('h2')
+
+  console.log(title.parentElement)        // Retorna o <article>
+  console.log(title.parentElement.parentElement)  // Retorna <body>
+  console.log(title.nextElementSibling)   // Retorna o primeiro <p>
+  console.log(title.previousElementSibling)       // Retorna o null
+  ```
+
+* ### Eventos de clique
+
+  Para interagirmos com ações do usuário dentro da página, precisamos de 3 passos principais.
+    * 1º Passo
+      Realizar uma query no DOM e obter a referência de onde irá ocorrer o evento
+
+    * 2º Passo
+      Adicionar no elemento um Event Listener
+
+    * 3º Passo
+      Implementar uma função de callback que é executada quando a ação acontecer
+
+  Para o exemplo da aula 03-03, temos:
+
+  ```js
+  const button = document.querySelector('button') // Primeiro passo
+
+  button.addEventListener('click')                // Segundo passo
+
+  button.addEventListener('click', () => {
+  console.log('Clicou no botão')
+  })                                              // Terceiro passo
+  ```
+
+  Agora iremos adicionar Event Listeners para todas as Li's do HTML, modificando o css inline ao clicarmos num elemento da li:
+
+  ```js
+  const lis = document.querySelectorAll('li')
+
+  lis.forEach(li => {
+    li.addEventListener('click', event => {
+      const clickedElement = event.target
+
+      clickedElement.style.textDecoration = 'line-through'
+    })
+  })
+  ```
+
+  Neste próximo passo, iremos ver como adicionar e remover elementos do DOM.
+  Para removermos, utilizamos o método .remove()
+
+  ```js
+  lis.forEach(li => {
+    li.addEventListener('click', event => {
+      const clickedElement = event.target
+
+      clickedElement.remove()
+    })
+  })
+  ```

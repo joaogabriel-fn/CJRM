@@ -1,3 +1,10 @@
-const title = document.querySelector('h1')
+// const ul = document.querySelector('ul')
+const lis = document.querySelectorAll('li')
 
-title.classList.toggle('test')
+lis.forEach(li => {
+  li.addEventListener('click', event => {
+    const clickedElement = event.target
+
+    clickedElement.remove()
+  })
+})
