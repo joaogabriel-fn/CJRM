@@ -382,6 +382,7 @@ paragraphs.forEach(paragraph => {
   ```
 
   Neste próximo passo, iremos ver como adicionar e remover elementos do DOM.
+  
   Para removermos, utilizamos o método .remove()
 
   ```js
@@ -393,3 +394,130 @@ paragraphs.forEach(paragraph => {
     })
   })
   ```
+
+  Para adicionarmos, iremos utilizar a propriedade já conhecida innerHTML
+
+  ```js
+  const button = document.querySelector('button')
+  const ul = document.querySelector('ul')
+
+  button.addEventListener('click', () => {
+  ul.innerHTML += '<li>Novo item</li>'
+  })
+  ```
+
+  Outra maneira de executarmos esta operação de adicionar um elemento ao DOM, é utilizando o método createElement(), onde é passado como argumento a estrutura que desejamos criar
+
+  ```js
+  button.addEventListener('click', () => {
+    const li = document.createElement('li')
+    console.log(li)     // Retornará <li></li> no console
+  })
+  ```
+
+  A partir da criação deste novo elemento, é possível adicionar o conteúdo que desejamos através da propriedade textContent.
+
+  ```js
+  button.addEventListener('click', () => {
+    const li = document.createElement('li')
+
+    li.textContent = 'Novo Item'
+    console.log(li)     // Retornará <li>Novo Item</li> no console
+  })
+  ```
+
+  Desta forma, para adicionarmos este elemento criado ao DOM, possuímos diversas maneiras, como o método append() no pai do element, ou até mesmo o método prepend()
+
+  ```js
+  const ul = document.querySelector('ul')
+
+  button.addEventListener('click', () => {
+    const li = document.createElement('li')
+
+    li.textContent = 'Novo Item'
+    ul.append(li)
+
+  // Ou
+
+  button.addEventListener('click', () => {
+    const li = document.createElement('li')
+
+    li.textContent = 'Novo Item'
+    ul.prepend(li)
+  })
+  ```
+
+  O método append() adiciona o novo elemento ao pai como último filho, já o método prepend() adiciona como o primeiro filho.
+ 
+* ### Event bubbling e event delegation
+
+  Quando a interação com um elemento dispara uma callback function através de seu Event Listener, como por exemplo a exclusão de uma li quando for clicada, este evento é propagado para o pai deste elemento, fazendo o processo repetir para toda a herança do elemento. Este comportamento é entendido como event bubbling.
+
+  ```js
+  const lis = document.querySelectorAll('li')
+  const ul = document.querySelector('ul')
+
+  lis.forEach(li => {
+    li.addEventListener('click', event => {
+      const clickedElement = event.target
+      console.log('Clicou na LI')
+      clickedElement.remove()
+    })
+  })
+
+  ul.addEventListener('click', () => {
+    console.log('Clicou na Ul')
+  })
+  ```
+
+  De acordo com o código acima, foi adicionado a todas Li's do DOM um event listener de click, onde irá excluir a li e exibir no console a frase "Clicou na Li" assim que receber um click, porém a Ul também possui um event listener de click, que irá exibir no console a frase "Clicou na Ul". Ao clicar na Li, a callback function do event listener da Ul também será executada devido ao event bubbling, assim será possível ver no console a frase "Clicou na Li" seguida da frase "Clicou na Ul".
+
+  Para evitar este tipo de interação, é possível utilizar o método event.stopPropagation(), sendo assim, se este método for adicionado ao final da função de callback do event listener da Li, será exibido no console apenas a frase "Clicou na Li", pois a callback function da Ul não será executada.
+
+  Agora que a ocorrência do event bubbling é conhecida, é possível refatorar o código do exemplo anterior para adequar o funcionamento, já que anteriormente, o event listener estava sendo adicionado para cada Li através de um forEach, prática que não é ideal, pois assim todas as novas Li's adicionadas à Ul não irão possuir o event listener. Para a refatoração, a identificação do tipo de elemento sendo clicado será feita pelo event.target, onde será possível visualizar a tagName deste elemento.
+
+  ```js
+  ul.addEventListener('click', event => {
+    const clickedElement = event.target
+
+    if (clickedElement.tagName === 'LI') {
+      clickedElement.remove()
+    }
+  })
+  ```
+
+* ### Mais eventos do DOM 
+
+  * #### Copy Event
+    ```js
+    const paragraph = document.querySelector('.copy-me')
+
+    paragraph.addEventListener('copy', () => {
+      console.log('Texto copiado')
+    })
+    ```
+
+    Ao copiar um texto, será exibido no console "Texto copiado".
+
+  * #### Mouse Move
+    ```js
+    const div = document.querySelector('.box')
+
+    div.addEventListener('mousemove', event => {
+      div.textContent = `X: ${event.offsetX} | Y: ${event.offsetY}`
+      console.log(event.offsetX, event.offsetY)
+    })
+    ```
+
+    Ao movimentar o cursor dentro da box, os eixos X e Y serão exibidos no console.
+
+  * #### Wheel
+    ```js
+    document.addEventListener('wheel', event => {
+      console.log(event.pageX, event.pageY)
+    })
+    ```
+
+* ### Desenvolvendo um popup
+
+  

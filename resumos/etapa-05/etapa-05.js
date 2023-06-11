@@ -1,10 +1,16 @@
-// const ul = document.querySelector('ul')
-const lis = document.querySelectorAll('li')
+const paragraph = document.querySelector('.copy-me')
 
-lis.forEach(li => {
-  li.addEventListener('click', event => {
-    const clickedElement = event.target
+paragraph.addEventListener('copy', () => {
+  console.log('Texto copiado')
+})
 
-    clickedElement.remove()
-  })
+const div = document.querySelector('.box')
+
+div.addEventListener('mousemove', event => {
+  div.textContent = `X: ${event.offsetX} | Y: ${event.offsetY}`
+  console.log(event.offsetX, event.offsetY)
+})
+
+document.addEventListener('wheel', event => {
+  console.log(event.pageX, event.pageY)
 })
