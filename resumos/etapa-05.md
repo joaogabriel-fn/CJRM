@@ -520,4 +520,4 @@ paragraphs.forEach(paragraph => {
 
 * ### Desenvolvendo um popup
 
-  
+  O desenvolvimento do popup está no arquivo etapa-05.js, aula-04-04.html e style.css
