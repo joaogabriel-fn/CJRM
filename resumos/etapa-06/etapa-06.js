@@ -1,19 +1,29 @@
 const form = document.querySelector('.signup-form')
-const usernameInput = document.querySelector('#username')
+const feedback = document.querySelector('.feedback')
+const testUsername = username => /^[a-zA-Z]{6,12}$/.test(username)
 
 
 form.addEventListener('submit', event => {
   event.preventDefault()
 
-  console.log(event.target.username.value)
+  const username = event.target.username.value
+  const isValidUsername = testUsername(username)
+
+  if (isValidUsername) {
+    feedback.textContent = 'Username Válido!'
+    return    
+  }
+
+  feedback.textContent = 'O username deve conter entre 6 a 12 caracteres e deve conter apenas letras'
 })
 
-const username = 'whyskas'
-const pattern = /^[a-z]{6,}$/
-const isAMatch = pattern.test(username)
+form.username.addEventListener('keyup', event => {
+  const isAValidUsername = testUsername(event.target.value)
 
-if (isAMatch) {
-  console.log('o teste da regex passou c:')
-} else {
-  console.log('o teste da regex não passou :c')
-}
+  if (isAValidUsername) {
+    form.username.setAttribute('class', 'success')
+    return
+  }
+
+  form.username.setAttribute('class', 'error')
+})

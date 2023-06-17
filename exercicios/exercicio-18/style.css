@@ -4,11 +4,13 @@
 }
 
 .username-help-feedback {
+  border-radius: 2px;
   margin-bottom: 2.5rem;
   color: darkorange;
 }
 
 .username-success-feedback {
+  border-radius: 2px;
   margin-bottom: 2.5rem;
   color: green;
 }

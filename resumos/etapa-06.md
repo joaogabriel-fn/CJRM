@@ -45,3 +45,63 @@ if (isAMatch) {
 ```
 
 Além do método .test(), que retorna um boolean, podemos também utilizar o método .search(), onde o valor retornado será -1 caso o padrão não seja encontrado, e se o valor for encontrado será retornado o index onde ele se inicia.
+
+```js
+const username = '123whyskas'
+const pattern = /^[a-z]{6,}$/
+const result = username.search(pattern)
+
+console.log(result) // Irá retornar 3, que é o índice onde o padrão se inicia.
+
+```
+
+## Validações de formulários
+
+Como forma de validar o formulário desenvolvido nas aulas anteriores, será desenvolvido um código utilizando a Regex.
+
+```js
+const form = document.querySelector('.signup-form')
+const feedback = document.querySelector('.feedback')
+
+
+form.addEventListener('submit', event => {
+  event.preventDefault()
+
+  const username = event.target.username.value
+  const usernameRegex = /^[a-zA-Z]{6,12}$/
+  const isValidUsername = usernameRegex.test(username)
+
+  if (isValidUsername) {
+    feedback.textContent = 'Username Válido!'
+    return    
+  }
+
+  feedback.textContent = 'O username deve conter entre 6 a 12 caracteres e deve conter apenas letras'
+})
+```
+
+O resultado esperado para o exercício é que seja exibido a mensagem para o usuário se o login é válido ou não, para isso foi inserido uma tag <p> com a classe feedback dentro do <form>. O próximo passo do exercício será atualizar o código para que a mensagem de validação seja atualizada em tempo real.
+
+## Eventos do teclado
+
+Como base para o exercício, foi utilizado como consulta a página de client-side verification da MDN.
+
+* ### Evento keyup
+
+  O evento 'keyup' serve para identificarmos o momento em que uma tecla é parada de pressionar. Sendo assim, será adicionado ao campo de input um Event Listener com este evento, onde a função de callback irá adicionar ao elemento HTML a classe .success ou .error, de acordo com a validação da Regex:
+
+  ```js
+  const testUsername = username => /^[a-zA-Z]{6,12}$/.test(username)
+
+
+  form.username.addEventListener('keyup', event => {
+    const isAValidUsername = testUsername(event.target.value)
+
+    if (isAValidUsername) {
+      form.username.setAttribute('class', 'success')
+      return
+    }
+
+    form.username.setAttribute('class', 'error')
+  })
+  ```
