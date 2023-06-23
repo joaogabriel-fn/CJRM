@@ -15,16 +15,39 @@ Independente se você já fez o quiz dos filmes enquanto acompanhava a aula, bus
 const body = document.body
 const form = document.querySelector('.quiz-form')
 const button = document.querySelector('.btn')
+const quizAnswers = ['B', 'B', 'A', 'B']
 
 let score = 0
-let feedbackText = ''
 
-const quizAnswers = ['B', 'B', 'A', 'B']
+const getUserAnswers = () => {
+  let userAnswers = []
+
+  for (let i = 0; i < quizAnswers.length; i++) {
+    form[`inputQuestion${i + 1}.value`]
+  }
+  // const userAnswers = [
+  //   form.inputQuestion1.value,
+  //   form.inputQuestion2.value,
+  //   form.inputQuestion3.value,
+  //   form.inputQuestion4.value,
+  // ]
+
+  return userAnswers
+}
 
 const checkUserAnswers = (userAnswer, index) => {
   if (userAnswer === quizAnswers[index]) {
     score += 25
   }
+}
+
+const finalResult = () => {
+  const feedbackText = {
+    success: `Parabéns! Você acertou ${score}% do teste`,
+    fail: `Que pena :( Você acertou ${score}% do teste`,
+    }
+  
+  return feedbackText
 }
 
 const createAndInsertFeedback = (status, feedbackText) => {
@@ -40,23 +63,18 @@ const createAndInsertFeedback = (status, feedbackText) => {
 const handleFormSubmit = event => {
   event.preventDefault()
 
-  const userAnswers = [
-    form.inputQuestion1.value,
-    form.inputQuestion2.value,
-    form.inputQuestion3.value,
-    form.inputQuestion4.value,
-  ]
+  const userAnswers = getUserAnswers()
 
   userAnswers.forEach(checkUserAnswers)
 
+  const feedbackText = finalResult()
+
   if (score > 50) {
-    feedbackText = `Parabéns! Você acertou ${score}% do teste`
-    createAndInsertFeedback('success', feedbackText)
+    createAndInsertFeedback('success', feedbackText.success)
     return
   }
   
-  feedbackText = `Que pena :( Você acertou ${score}% do teste`  
-  createAndInsertFeedback('danger', feedbackText)
+  createAndInsertFeedback('danger', feedbackText.fail)
 }
 
 form.addEventListener('submit', handleFormSubmit)

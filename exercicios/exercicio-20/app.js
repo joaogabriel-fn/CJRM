@@ -21,28 +21,55 @@
   - Faça o contador do index.html funcionar;
   - O clique no botão "Parar contador" deve fazer com que o contador exiba 0.
 */
-const counterContainer = document.querySelector('.container')
-const counterDisplay = document.querySelector('.counter-container')
+// const buttonInitCounter = document.querySelector('.button-init-counter')
+// const buttonStopCounter = document.querySelector('.button-stop-counter')
+// const counterContainer = document.querySelector('.counter-container')
 
-let counter = 0
+// let counter = 0
 
-const timer = setInterval(() => {
+// buttonInitCounter.addEventListener('click', event => {
+//   const timer = setInterval(() => {
   
-  if (counter === -1) {
-    clearInterval(timer)
-  }
-  
-  counter += 1
-  counterDisplay.textContent = counter
-}, 1000)
+//     if (counter === -1) {
+//       clearInterval(timer)
+//     }
+    
+//     counter += 1
+//     counterContainer.textContent = counter
+//   }, 1000)
+// })
 
-counterContainer.addEventListener('click', event => {
-  const clickedElementClasses = event.target.getAttribute('class')
-  
-  if (clickedElementClasses.includes('button-stop-counter')) {
-    counter = -1
-  }
+// buttonStopCounter.addEventListener('click', event => {
+//     counter = -1
+// })
+
+// CORREÇAO
+
+const buttonInitCounter = document.querySelector('.button-init-counter')
+const buttonStopCounter = document.querySelector('.button-stop-counter')
+const counterContainer = document.querySelector('.counter-container')
+
+let timer = null
+
+const incrementCounter = () => {
+  const incrementedCounter = Number(counterContainer.textContent) + 1
+  counterContainer.textContent = incrementedCounter
+}
+
+const stopCounter = () => {
+  clearInterval(timer)
+  counterContainer.textContent = 0
+}
+
+
+buttonInitCounter.addEventListener('click', () => {
+  timer = setInterval(incrementCounter, 1000)
 })
+
+buttonStopCounter.addEventListener('click', () => {
+  stopCounter
+})
+
 
 /* 
   04

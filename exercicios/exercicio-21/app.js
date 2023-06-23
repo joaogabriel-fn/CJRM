@@ -6,6 +6,9 @@
 */
 
 const randomNumbers = [10, 30, 15, 25, 50, 40, 5]
+const oddNumbers = randomNumbers.filter(randomNumber => randomNumber % 2 === 1)
+
+// console.log(oddNumbers)
 
 /*
   02
@@ -15,6 +18,18 @@ const randomNumbers = [10, 30, 15, 25, 50, 40, 5]
 
 const crazyNumbers = [937, 5, 395, 402, 501, 333, 502, 781, 3, 691]
 
+const numbersUnder501Counter = (accumulator, crazyNumber) => {
+  if (crazyNumber < 501) {
+    accumulator += 1
+  }
+
+  return accumulator
+}
+
+const numbersUnder501 = crazyNumbers.reduce(numbersUnder501Counter, 0)
+
+// console.log(numbersUnder501)
+
 /*
   03
 
@@ -23,6 +38,9 @@ const crazyNumbers = [937, 5, 395, 402, 501, 333, 502, 781, 3, 691]
 */
 
 const numbers = [5, 7, 3]
+const squaredNumbers = numbers.map(number => number ** 2)
+
+// console.log(squaredNumbers)
 
 /*
   04
@@ -49,6 +67,19 @@ const cart = [
   - Nome 3
 */
 
+// const listCartItemsName = item => {
+//   itemName = `- ${item.name}`
+//   console.log(itemName)
+// }
+
+// const cartItensName = cart.map(listCartItemsName)
+
+// const listCartItemsName = (cartItem, index) => {
+//   console.log(`${index+1} - ${cartItem.name}`)
+// }
+
+// cart.forEach(listCartItemsName)
+
 /*
   05
 
@@ -70,6 +101,10 @@ const tarantinoMovies = [
   { name: 'Kill Bill: Volume 1', release: 2003 }
 ]
 
+const moviesBefore2000 = tarantinoMovies.filter((item) => item.release < 2000)
+
+// console.log(moviesBefore2000)
+
 /*
   06
 
@@ -86,6 +121,10 @@ const tvShows = [
   { name: 'House M.D.', releaseYear: 2004 },
   { name: 'Watchmen', releaseYear: 2019 }
 ]
+
+const tvShowsTitle = tvShows.map(tvShow => tvShow.name)
+
+// console.log(tvShowsTitle)
 
 /*
   07
