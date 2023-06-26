@@ -6,7 +6,10 @@
 */
 
 const randomNumbers = [10, 30, 15, 25, 50, 40, 5]
-const oddNumbers = randomNumbers.filter(randomNumber => randomNumber % 2 === 1)
+
+const getOddNumbers = randomNumber => randomNumber % 2 === 1
+
+const oddNumbers = randomNumbers.filter(getOddNumbers)
 
 // console.log(oddNumbers)
 
@@ -18,15 +21,10 @@ const oddNumbers = randomNumbers.filter(randomNumber => randomNumber % 2 === 1)
 
 const crazyNumbers = [937, 5, 395, 402, 501, 333, 502, 781, 3, 691]
 
-const numbersUnder501Counter = (accumulator, crazyNumber) => {
-  if (crazyNumber < 501) {
-    accumulator += 1
-  }
+const countNumbersUnder501 = (accumulator, crazyNumber) =>
+ crazyNumber < 501 ? ++accumulator : accumulator
 
-  return accumulator
-}
-
-const numbersUnder501 = crazyNumbers.reduce(numbersUnder501Counter, 0)
+const numbersUnder501 = crazyNumbers.reduce(countNumbersUnder501, 0)
 
 // console.log(numbersUnder501)
 
@@ -80,6 +78,11 @@ const cart = [
 
 // cart.forEach(listCartItemsName)
 
+const productList = cart.reduce((accumulator, { name }) => 
+  `${accumulator}- ${name}\n`, '')
+
+// console.log(productList)
+
 /*
   05
 
@@ -102,7 +105,7 @@ const tarantinoMovies = [
 ]
 
 const moviesBefore2000 = tarantinoMovies.filter((item) => item.release < 2000)
-
+ 
 // console.log(moviesBefore2000)
 
 /*

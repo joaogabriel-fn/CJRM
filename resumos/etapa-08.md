@@ -116,3 +116,65 @@
 
   console.log(rogerScore)
   ```
+
+## Método sort
+
+  O método sort é utilizado para ordenar os itens de um array, podendo ser em ordem alfabética para strings, crescente/decrescente para números e até mesmo ordenar objetos. O sort *modifica* o array original.
+
+  A declaração do sort é feita da seguinte forma:
+  ```js
+  array.sort()
+  ```
+
+  Quando precisamos ordenar as strings em ordem alfabética, é necessário apenas encadear o método sort().
+  
+  Já para ordenar números e objetos, não podemos apenas encadear o método, devemos passar como argumento do sort uma função de comparação, onde a e b serão comparados de acordo com o valor que retornarem (-1, 0 e 1), conforme o exemplo abaixo: 
+
+  ```js
+  const theBigFamily = [
+    { name: 'Lineu', score: 20 },
+    { name: 'Nenê', score: 10 },
+    { name: 'Tuco', score: 50 },
+    { name: 'Bebel', score: 30 },
+    { name: 'Agostinho', score: 70 }
+  ]
+
+  theBigFamily.sort((item1, item2) => {
+    if (item1.score > item2.score) {
+      return -1
+    } else if (item2.score > item1.score) {
+      return 1
+    }
+
+    return 0
+  }) 
+  ```
+
+  De acordo com o exemplo, os itens do array serão ordenados pelo score de cada membro. Podemos também escrever a função de uma forma muito mais legível e reduzida, economizando algumas linhas de código:
+
+  ```js
+  theBigFamily.sort((item1, item2) => item2.score - item1.score) 
+  ```
+
+## Encadeando Objetos
+
+  Imagine que temos um array com objetos de livros contendo nome e preço, a partir disso, será necessário filtrar todos os livros com valor superior a 20 reais e gerar uma string para cada livro com o nome e o preço do livro em promoção.
+
+  ```js
+  const books = [
+    { name: 'Código Limpo', price: 30 },
+    { name: 'O milagre da manhã', price: 5 },
+    { name: 'Alice no País das Maravilhas', price: 10 },
+    { name: 'Quem Pensa Enriquece', price: 50 },
+    { name: 'O livro da ciência', price: 40 }
+  ]
+
+  const booksOnSale = books
+    .filter(({ price }) => price > 20)
+    .map(({ name, price }) =>
+      `O preço do livro "${name}" caiu para ${price} reais`)
+  ```
+
+  Para que seja evitado declarar uma nova constante para cada método que seja aplicado, é possível encadear um método no outro, como o .map(), que é um método de array, junto ao .filter(), que é um método que gera um array. Como convenção, é utilizado uma identação a partir do ponto para cada método que está sendo encadeado, facilitando a leitura.
+
+  

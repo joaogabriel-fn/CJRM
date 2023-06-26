@@ -20,17 +20,9 @@ const quizAnswers = ['B', 'B', 'A', 'B']
 let score = 0
 
 const getUserAnswers = () => {
-  let userAnswers = []
-
-  for (let i = 0; i < quizAnswers.length; i++) {
-    form[`inputQuestion${i + 1}.value`]
-  }
-  // const userAnswers = [
-  //   form.inputQuestion1.value,
-  //   form.inputQuestion2.value,
-  //   form.inputQuestion3.value,
-  //   form.inputQuestion4.value,
-  // ]
+  const userAnswers = quizAnswers.map((_, index) => {
+    return form[`inputQuestion${i + 1}.value`]
+  })
 
   return userAnswers
 }
@@ -63,7 +55,7 @@ const createAndInsertFeedback = (status, feedbackText) => {
 const handleFormSubmit = event => {
   event.preventDefault()
 
-  const userAnswers = getUserAnswers()
+  getUserAnswers()
 
   userAnswers.forEach(checkUserAnswers)
 

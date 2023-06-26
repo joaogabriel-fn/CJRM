@@ -8,6 +8,9 @@
 
 const names = ['Caio', 'André', 'Dário']
 
+const sortedNames = names.sort()
+// console.log(sortedNames)
+
 /*
   02
 
@@ -22,6 +25,9 @@ const characters = [
   { id: 01, name: 'Scar' },
   { id: 04, name: 'Mufasa' }
 ]
+
+const sortedCharactersById = characters.sort((a, b) => a.id - b.id)
+// console.log(sortedCharactersById)
 
 /*
   03
@@ -40,6 +46,9 @@ const numbers = [41, 15, 63, 349, 25, 22, 143, 64, 59, 291]
 */
 
 const randomNumbers = [10, 5, 0, 40, 60, 10, 20, 70]
+const randomNumberOver50 = randomNumbers.filter(number => number > 50)[0]
+
+console.log(randomNumberOver50)
 
 /*
   05
@@ -50,6 +59,9 @@ const randomNumbers = [10, 5, 0, 40, 60, 10, 20, 70]
 */
 
 const people = ['Cauã', 'Alfredo', 'Bruno']
+const sortedPeople = people.sort()
+console.log(sortedPeople)
+
 
 /*
   06
