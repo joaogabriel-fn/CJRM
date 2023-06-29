@@ -6,11 +6,16 @@
   - Exiba o array ordenado no console.
 */
 
+const getArrayCopy = (item => item)
+
 const names = ['Caio', 'André', 'Dário']
 
-const sortedNames = names.sort()
-// console.log(sortedNames)
+const ascendingSortedNames = names
+  .map(getArrayCopy)
+  .sort()
 
+// console.log(sortedAscendingNames)
+// console.log(names)
 /*
   02
 
@@ -26,9 +31,11 @@ const characters = [
   { id: 04, name: 'Mufasa' }
 ]
 
-const sortedCharactersById = characters.sort((a, b) => a.id - b.id)
-// console.log(sortedCharactersById)
+const charactersSortedById = characters
+  .map(({ id, name }) => ({ id, name }))
+  .sort((a, b) => a.id - b.id)
 
+// console.log(charactersSortedById, characters)
 /*
   03
 
@@ -38,6 +45,11 @@ const sortedCharactersById = characters.sort((a, b) => a.id - b.id)
 */
 
 const numbers = [41, 15, 63, 349, 25, 22, 143, 64, 59, 291]
+const ascendingSortedNumbers = numbers
+  .map(getArrayCopy)
+  .sort((a, b) => a - b)
+
+// console.log(sortedAscendingNumbers)
 
 /*
   04
@@ -46,9 +58,11 @@ const numbers = [41, 15, 63, 349, 25, 22, 143, 64, 59, 291]
 */
 
 const randomNumbers = [10, 5, 0, 40, 60, 10, 20, 70]
-const randomNumberOver50 = randomNumbers.filter(number => number > 50)[0]
+const numberGreaterThan50 = randomNumbers.find(number => number > 50)
+// const randomNumberOver50 = randomNumbers.filter(number => number > 50)[0]
 
-console.log(randomNumberOver50)
+// console.log('numberGreaterThan50')
+// console.log(randomNumberOver50)
 
 /*
   05
@@ -59,9 +73,12 @@ console.log(randomNumberOver50)
 */
 
 const people = ['Cauã', 'Alfredo', 'Bruno']
-const sortedPeople = people.sort()
-console.log(sortedPeople)
+const descendingSortedPeople = people
+  .map(getArrayCopy)
+  .sort()
+  .reverse()
 
+// console.log(sortedDescendingPeople, people)
 
 /*
   06
@@ -72,6 +89,17 @@ console.log(sortedPeople)
 */
 
 const ingredients = ['vinho', 'tomate', 'cebola', 'cogumelo']
+// const cookedIngredients = ingredients.map(number => number + ' cozido')
+const cookedIngredients = ingredients.reduce((acc, item, index, array) => {
+  const correctWordGender = /a$/.test(item) ? 'cozida' : 'cozido'
+  const isLastItem = index === array.length - 1
+  const ingredientMessage = acc + `${item} ${correctWordGender}`
+
+  return isLastItem ? ingredientMessage : `${ingredientMessage}, `
+}, '')
+
+console.log(cookedIngredients)
+
 
 /*
   07
@@ -80,7 +108,7 @@ const ingredients = ['vinho', 'tomate', 'cebola', 'cogumelo']
     assistiram apenas os filmes da Disney.
 */
 
-const topBrazilmovies = [
+const topBrazilMovies = [
   { title: 'Vingadores: Ultimato', peopleAmount: 19686119, distributedBy: 'Disney' },
   { title: 'Titanic', peopleAmount: 17050000, distributedBy: 'Paramount / 20th Century' },
   { title: 'O Rei Leão', peopleAmount: 16267649, distributedBy: 'Disney' },
@@ -92,6 +120,20 @@ const topBrazilmovies = [
   { title: 'Os Vingadores', peopleAmount: 10968065, distributedBy: 'Disney' },
   { title: 'Dona Flor e Seus Dois Maridos', peopleAmount: 10735524, distributedBy: 'Embrafilme' }
 ]
+
+const watchedDisneyMovies = topBrazilMovies
+  .filter(({ distributedBy }) => distributedBy === 'Disney')
+  .reduce((acc, { peopleAmount }) => acc += peopleAmount, 0)
+
+// const watchedDisneyMovies = topBrazilMovies.reduce((acc, movie) => {
+//   if (movie.distributedBy === 'Disney') {
+//     acc += movie.peopleAmount
+//   }
+
+//   return acc
+// }, 0)
+
+// console.log(watchedDisneyMovies)
 
 /*
   08
@@ -113,12 +155,28 @@ const pets = [
   { name: 'Chico', age: 6, gender: 'Male', type: 'Dog' }
 ]
 
+const dogsWithHumanAge = pets
+  .filter(({ type }) => type === 'Dog')
+  .map(({ name, age, gender, type }) => ({ name, age: age * 7, gender, type}))
+
+// console.log(dogsWithHumanAge)
+
 /*
   09
   
-  - Considerando o array topBrazilmovies, através do map ou do reduce, insira 
+  - Considerando o array topBrazilMovies, através do map ou do reduce, insira 
     os nomes dos filmes na ul do index.html.
 */
+
+const moviesUl = document.querySelector('.list-group')
+
+// topBrazilMovies
+//   .map(({ title }) => moviesUl.innerHTML += `<li>${title}</li>`)
+
+const movieNames = topBrazilMovies
+  .reduce((acc, { title }) => acc + `<li>${title}</li>`, '')
+
+moviesUl.innerHTML = movieNames
 
 /*
   10
