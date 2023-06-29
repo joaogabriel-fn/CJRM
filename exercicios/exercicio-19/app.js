@@ -12,61 +12,51 @@ Independente se você já fez o quiz dos filmes enquanto acompanhava a aula, bus
 É importante que a sua versão do quiz seja feita apenas com o conteúdo que vimos até aqui.
 */
 
-const body = document.body
 const form = document.querySelector('.quiz-form')
 const button = document.querySelector('.btn')
+const finalResult = document.querySelector('.result')
+
 const quizAnswers = ['B', 'B', 'A', 'B']
 
-let score = 0
 
-const getUserAnswers = () => {
-  const userAnswers = quizAnswers.map((_, index) => {
-    return form[`inputQuestion${i + 1}.value`]
-  })
-
-  return userAnswers
-}
-
-const checkUserAnswers = (userAnswer, index) => {
-  if (userAnswer === quizAnswers[index]) {
-    score += 25
-  }
-}
-
-const finalResult = () => {
-  const feedbackText = {
-    success: `Parabéns! Você acertou ${score}% do teste`,
-    fail: `Que pena :( Você acertou ${score}% do teste`,
-    }
-  
-  return feedbackText
-}
-
-const createAndInsertFeedback = (status, feedbackText) => {
-  const formFeedback = document.createElement('h1')
-
-  body.innerHTML = ''
-  body.classList.add(`bg-${status}`, 'text-center')
-  formFeedback.classList.add('p-4')
-  formFeedback.textContent = feedbackText
-  body.appendChild(formFeedback)
-}
-
-const handleFormSubmit = event => {
+button.addEventListener('click', event => {
   event.preventDefault()
-
-  getUserAnswers()
-
-  userAnswers.forEach(checkUserAnswers)
-
-  const feedbackText = finalResult()
-
-  if (score > 50) {
-    createAndInsertFeedback('success', feedbackText.success)
-    return
-  }
   
-  createAndInsertFeedback('danger', feedbackText.fail)
-}
+  const userAnswers = [
+    form.inputQuestion1.value,
+    form.inputQuestion2.value,
+    form.inputQuestion3.value,
+    form.inputQuestion4.value
+  ]    
+  
+  const score = userAnswers.reduce((acc, answer, index) => {
+    if (answer === quizAnswers[index]) {
+      return acc += 25
+    }
 
-form.addEventListener('submit', handleFormSubmit)
+    return acc
+  }, 0)
+
+  const scrollTimer = setInterval(() => {
+    if (scrollY > 0) {
+      scrollTo(0, scrollY - 20)
+      return
+    }
+
+    clearInterval(scrollTimer)
+  }, 1)
+
+  finalResult.classList.remove('d-none')
+
+
+  let counter = 0
+  const scoreTimer = setInterval(() => {
+    if (score === counter) {
+      clearInterval(scoreTimer)
+    }
+
+    finalResult.querySelector('span').textContent = `${counter}%`
+    counter++
+  }, 20)
+
+})
