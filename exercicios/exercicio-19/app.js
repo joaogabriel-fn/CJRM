@@ -27,8 +27,8 @@ button.addEventListener('click', event => {
     form.inputQuestion2.value,
     form.inputQuestion3.value,
     form.inputQuestion4.value
-  ]    
-  
+  ]
+
   const score = userAnswers.reduce((acc, answer, index) => {
     if (answer === quizAnswers[index]) {
       return acc += 25
