@@ -6,6 +6,8 @@
 */
 
 const message = 'Próxima etapa: 10'
+const doesMessageIncludesColon = message.includes(':')
+console.log(doesMessageIncludesColon)
 
 /*
   02
@@ -15,6 +17,8 @@ const message = 'Próxima etapa: 10'
 */
 
 const numbers = [979, 2673, 41, 77, 276, 554, 399, 385, 65, 726, 635, 833, 462]
+const doesNumbersIncludes635 = numbers.includes(635)
+console.log(doesNumbersIncludes635)
 
 /*
   A partir daqui, vamos treinar nossas skills de refatoração.
