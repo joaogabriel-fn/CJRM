@@ -56,8 +56,8 @@ const past = new Date('April 24 2019 13:20:00')
   - Exiba, no console, a hora do objeto que você acabou de criar.
 */
 
-// console.log(past.toTimeString())
 // console.log(past.getHours())
+// console.log(past.toTimeString())
 
 /*
   06
@@ -77,9 +77,10 @@ const future = new Date('December 24 2023 00:00:00')
 
 const difference = future.getTime() - past.getTime()
 const differenceInDays = Math.round(difference / 86400000)
-console.log(differenceInDays)
+// console.log(difference)
+// console.log(differenceInDays)
 
-/*
+/*b
   08
   
   Assim como a 1ª aplicação que implementamos (Quiz), considere fazer 
