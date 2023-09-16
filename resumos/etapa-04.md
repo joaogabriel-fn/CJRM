@@ -58,7 +58,7 @@ let user = {
     age: 22
     email: 'joaogabriel@hotmail.com',
     city: 'Curitiba'
-    blogPosts: ['Dano ou CDR na matchup irelia x fiora', 'Slow fight ou hard engage?']
+    blogPosts: ['Exemplos de Objetos', 'Escrevendo um novo objeto']
     login: function () {
         console.log('Usuário logado')
     }
@@ -189,11 +189,11 @@ O código acima resultaria num erro, acusando que blogPosts não está definido.
 }
 ```
 
-A keyword this é um **objeto de contexto**, ou seja, ele representa o contexto no qual o código atual está sendo executado. O valor dele pode ser alterado de acordo com o contexto que é referenciado.
+A keyword **this** é um **objeto de contexto**, ou seja, ele representa o contexto no qual o código atual está sendo executado. O valor dele pode ser alterado de acordo com o contexto que é referenciado.
 
-Caso this seja referenciado no escopo global, irá retornar o objeto window.
+Caso **this** seja referenciado no escopo global, irá retornar o objeto window.
 
-Quando o this é declarado num método utilizando arrow function, ele não assume o contexto do bloco de código, por isso é necessário utilizar function declaration para que funcione corretamente.
+Quando o **this** é declarado num método utilizando arrow function, ele não assume o contexto do bloco de código, por isso é necessário utilizar function declaration para que funcione corretamente.
 
 * ### Objetos em arrays
 

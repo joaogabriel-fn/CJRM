@@ -17,8 +17,10 @@ const months = [
   'Setembro',
   'Outubro',
   'Novembro',
-  'Dezembro'
+  'Dezembro',
 ]
+
+// console.log(months.indexOf('Fevereiro'))
 
 /*
   02
@@ -27,11 +29,16 @@ const months = [
   - Exiba o objeto no console.
 */
 
+const present = new Date()
+// console.log(present)
+
 /*
   03
 
   - Baseado no objeto que você acabou de criar, exiba o ano atual no console.
 */
+
+// console.log(present.getFullYear())
 
 /*
   04
@@ -40,11 +47,17 @@ const months = [
   - Exiba o objeto no console.
 */
 
+const past = new Date('April 24 2019 13:20:00')
+// console.log(past)
+
 /*
   05
 
   - Exiba, no console, a hora do objeto que você acabou de criar.
 */
+
+// console.log(past.getHours())
+// console.log(past.toTimeString())
 
 /*
   06
@@ -53,13 +66,21 @@ const months = [
   - Exiba o objeto no console.
 */
 
+const future = new Date('December 24 2023 00:00:00')
+// console.log(future)
+
 /*
   07
 
   - Exiba no console a quantidade de dias entre o momento futuro e o passado.
 */
 
-/*
+const difference = future.getTime() - past.getTime()
+const differenceInDays = Math.round(difference / 86400000)
+// console.log(difference)
+// console.log(differenceInDays)
+
+/*b
   08
   
   Assim como a 1ª aplicação que implementamos (Quiz), considere fazer 

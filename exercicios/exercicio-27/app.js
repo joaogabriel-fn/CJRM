@@ -4,17 +4,17 @@
   - Implemente um código assíncrono entre os console.log() abaixo.
 */
 
-console.log('Linha 1')
-console.log('Linha 2')
-console.log('Linha 3')
-console.log('Linha 4')
+// console.log('Linha 1')
+// console.log('Linha 2')
+// console.log('Linha 3')
+// console.log('Linha 4')
 
+// setTimeout(() => console.log('Hi'), 1000)
 
-
-console.log('Linha 5')
-console.log('Linha 6')
-console.log('Linha 7')
-console.log('Linha 8')
+// console.log('Linha 5')
+// console.log('Linha 6')
+// console.log('Linha 7')
+// console.log('Linha 8')
 
 /*
   02
@@ -27,6 +27,11 @@ function logGreeting (name) {
   console.log(`olá, ${name}`)
 }
 
+
+const x = (callback) => {
+  callback('Joao')
+}
+
 // x(logGreeting)
 
 /*
@@ -36,9 +41,11 @@ function logGreeting (name) {
 */
 
 const numbers = [3, 4, 10, 20]
-const lesserThanFive = numbers.filter(num => num < 5)
+const getLessThanFive = num => num < 5
 
-console.log(lesserThanFive)
+const lesserThanFive = numbers.filter(getLessThanFive)
+
+// console.log(lesserThanFive)
 
 /*
   04
@@ -47,13 +54,10 @@ console.log(lesserThanFive)
 */
 
 const prices = [12, 19, 7, 209]
-let totalPrice = 0
+const getTotalPrice = (acc, price) => acc + price
+const totalPrice = prices.reduce(getTotalPrice, 0)
 
-for (let i = 0; i < prices.length; i++) {
-  totalPrice += prices[i]
-}
-
-console.log(`Preço total: ${totalPrice}`)
+// console.log(`Preço total: ${totalPrice}`)
 
 /*
   05
@@ -63,7 +67,16 @@ console.log(`Preço total: ${totalPrice}`)
   - Não insira `car['color'] = azul`.
 */
 
+// let car = { color: 'amarelo' }
+// const color = 'azul'
+// car = {color}
+
+
 let car = { color: 'amarelo' }
+let secondCar = car
+secondCar.color = 'azul'
+// console.log(car, secondCar)
+
 
 /*
   06
@@ -74,6 +87,21 @@ let car = { color: 'amarelo' }
   - Se todos os argumentos forem passados, retorne a string 'A função foi 
     invocada com 3 argumentos'.
 */
+
+const newFunc = (first, second, third) => {
+  // if (first === undefined || second === undefined || third === undefined) {
+  //   return 'A função deve ser invocada com 3 argumentos'
+  // }
+
+  // return 'A função foi invocada com 3 argumentos'
+  const isSomeParameterUndefined = [first, second, third].includes(undefined)
+
+  return isSomeParameterUndefined 
+    ? 'A função deve ser invocada com 3 argumentos'
+    : 'A função foi invocada com 3 argumentos'
+}
+
+// console.log(newFunc())
 
 /*
   07
@@ -97,7 +125,47 @@ let car = { color: 'amarelo' }
       na frase acima.
 */
 
+// let booksBox = {
+//   spaces: 5,
+//   booksIn: 0,
+//   addBooks: function (booksToAdd) {
+//     if (this.booksIn >= 5) {
+//       console.log('A caixa já está cheia')
+//       return
+//     }
+
+//     if ((this.booksIn += booksToAdd) > 5) {
+//       const spacesLeft = 5 - (this.booksIn - booksToAdd)
+//       console.log(`Só cabem mais ${spacesLeft} ${spacesLeft === 1 ? 'livro' : 'livros'}.`)
+//       this.booksIn = 5
+//     }
+    
+//     console.log(`Já há ${this.booksIn} livros na caixa`)
+//   }
+// }
+
+// booksBox.addBooks(2)
+// booksBox.addBooks(2)
+// booksBox.addBooks(2)
+
 let booksBox = {
   spaces: 5,
-  booksIn: 0
+  booksIn: 0,
 }
+
+booksBox.addBooks = booksQuantity => {
+  if (booksBox.booksIn === booksBox.spaces) {
+    return `A caixa já está cheia`
+  }
+  
+  if (booksBox.booksIn + booksQuantity > booksBox.spaces) {
+    return `Só cabem mais ${books.spaces - booksBox.booksIn} livros`
+  }
+
+  booksBox.booksIn += booksQuantity
+  return `Já há ${booksBox.booksIn} livros na caixa`
+}
+
+console.log(booksBox.addBooks(2))
+console.log(booksBox.addBooks(2))
+console.log(booksBox.addBooks(1))
