@@ -23,7 +23,9 @@
 */
 
 const user = { id: 42, isVerified: true }
+const {id, isVerified} = user
 
+// console.log(`id: ${id}, isVerified: ${isVerified}`)
 /*
   04
 
@@ -37,6 +39,10 @@ const user = { id: 42, isVerified: true }
 const robotA = { name: 'Bender' }
 const robotB = { name: 'HAL 9000' }
 
+const {name: nameA}  = robotA
+const {name: nameB} = robotB
+
+// console.log(nameA, nameB)
 /*
   05
 
@@ -56,23 +62,15 @@ const c = 'c'
   - Refatore o código abaixo.
 */
 
-const useDataSomewhereElse = value => {
-  console.log(value)
-}
+const useDataSomewhereElse = ({ target, property, willChange }) => console.log({target, property, willChange})
 
-const updateSomething = (data = {}) => {
-  const target = data.target
-  const property = data.property
-  let willChange = data.willChange
-
-  if (willChange === 'valor indesejado') {
-    willChange = 'valor desejado'
-  }
+const updateSomething = ({ target, property, willChange }) => {
+  willChange = willChange === 'valor indesejado' ? 'valor desejado' : 'valor indesejado'
 
   useDataSomewhereElse({
-    target: target,
-    property: property,
-    willChange: willChange
+    target,
+    property,
+    willChange
   })
 }
 
@@ -87,19 +85,25 @@ updateSomething({ target: '1', property: '2', willChange: 'valor indesejado' })
 
 const clockContainer = document.querySelector('.clock-container')
 
+const isLengthOne = (time) => String(time).length === 1 ? `0${time}` : time
+
+const getFormattedTime = (date) => {
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
+
+  return `
+    <span>${isLengthOne(hours)}</span>
+    <span>${isLengthOne(minutes)}</span>
+    <span>${isLengthOne(seconds)}</span>
+    `
+}
+
 const updateClock = () => {
   const present = new Date()
-  const hours = present.getHours()
-  const minutes = present.getMinutes()
-  const seconds = present.getSeconds()
 
-  const clockHTML = `
-    <span>${String(hours).length === 1 ? `0${hours}` : hours}</span> :
-    <span>${String(minutes).length === 1 ? `0${minutes}` : minutes}</span> :
-    <span>${String(seconds).length === 1 ? `0${seconds}` : seconds}</span>
-  `
-
-  clockContainer.innerHTML = clockHTML
+  formattedDate = getFormattedTime(present)
+  clockContainer.innerHTML = formattedDate
 }
 
 setInterval(updateClock, 1000)
