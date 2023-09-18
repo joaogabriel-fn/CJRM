@@ -29,8 +29,22 @@ const request = new XMLHttpRequest()
 //   }
 // })
 
-request.open('GET', 'https://pokeapi.co/api/v2/pokemon/pikachu')
-request.send()
+// request.addEventListener('readystatechange', () => {
+//   const isRequestOk = request.readyState === 4 && request.status === 200
+//   const isRequestNotOk = request.readyState === 4
+
+//   if (isRequestOk) {
+//     console.log(request.responseText)
+//     return
+//   }
+
+//   if (isRequestNotOk) {
+//     console.log('Não foi possível obter os dados do pokémon')
+//   }
+// })
+
+// request.open('GET', 'https://pokeapi.co/api/v2/pokemon/pikachu')
+// request.send()
 
 /*
   02
@@ -47,7 +61,7 @@ request.send()
     - Quantos metros você caminhou (number iniciado em 0).
 */
 
-const personalInfo = {
+let personalInfo = {
   name: 'Joao',
   lastName: 'Nascimento',
   sex: 'M',
@@ -55,8 +69,10 @@ const personalInfo = {
   height: 1.75,
   weight: 75,
   isWalking: false,
-  walkingDistance: 0
+  walkedMeters: 0
 }
+
+// console.log(personalInfo)
 
 /*
   03
@@ -68,15 +84,13 @@ const personalInfo = {
 */
 
 personalInfo.addAge = () => {
-  personalInfo.age ++
+  personalInfo.age++
 }
 // console.log(personalInfo)
 
-personalInfo.addAge()
-personalInfo.addAge()
-personalInfo.addAge()
-personalInfo.addAge()
-personalInfo.addAge()
+for (let i=0; i < 5; i++) {
+  personalInfo.addAge();
+}
 
 // console.log(personalInfo)
 
@@ -91,17 +105,16 @@ personalInfo.addAge()
     método 4x, com diferentes metragens passadas por parâmetro.
 */
 
-personalInfo.addWalkingDistance = walkingDistance => {
+personalInfo.addwalkedMeters = walkedMeters => {
   personalInfo.isWalking = true
-  personalInfo.walkingDistance += walkingDistance
+  personalInfo.walkedMeters += walkedMeters
 }
 
-personalInfo.addWalkingDistance(400)
-personalInfo.addWalkingDistance(100)
-personalInfo.addWalkingDistance(200)
-personalInfo.addWalkingDistance(300)
+const meters = [7, 13, 15, 20]
 
-// console.log(personalInfo)
+meters.forEach(meter => personalInfo.addwalkedMeters(meter))
+
+// console.log(personalInfo.walkedMeters)
 /*
   05
 
@@ -119,18 +132,24 @@ personalInfo.addWalkingDistance(300)
       "metro", no singular.
 */
 
-const getPlural = (verification, singular, plural) => verification === 1 ? singular : plural
+const getPlural = (verification, singular, plural) => 
+  verification === 1 ? singular : plural
 const getPronoun = (sex) => sex === 'M' ? 'o' : 'a'
 
 personalInfo.greetingMessage = () => {
-  let { name, lastName, age, height, weight, walkingDistance, sex } = personalInfo
+  let { name, lastName, age, height, weight, walkingDistance, sex } = 
+    personalInfo
+  
   const fullName = `${name} ${lastName}`
   const pronoun = getPronoun(sex)
-  const isAgeSingular = getPlural(age, 'ano', 'anos')
-  const isWalkingDistanceSingular = getPlural(walkingDistance, 'metro', 'metros')
+  const agePluralOrSingular = getPlural(age, 'ano', 'anos')
+  const walkedMetersPluralOrSingular = 
+    getPlural(walkingDistance, 'metro', 'metros')
+  const heightMetersPluralOrSingular = 
+    getPlural(height, 'metro', 'metros')
 
   const greetMessage = 
-  `Oi. Eu sou ${pronoun} ${fullName}, tenho ${age} ${isAgeSingular}, ${height} metros de altura, peso ${weight} quilos e, só hoje, eu já caminhei ${walkingDistance} ${isWalkingDistanceSingular}.`
+  `Oi. Eu sou ${pronoun} ${fullName}, tenho ${age} ${agePluralOrSingular}, ${height} ${heightMetersPluralOrSingular} de altura, peso ${weight} quilos e, só hoje, eu já caminhei ${walkingDistance} ${walkedMetersPluralOrSingular}.`
 
   return greetMessage
 }
@@ -139,7 +158,8 @@ personalInfo.greetingMessage = () => {
 // personalInfo.age = 1
 // personalInfo.sex = 'F'
 // personalInfo.walkingDistance = 1
-console.log(personalInfo.greetingMessage())
+// personalInfo.height = 1
+// console.log(personalInfo.greetingMessage())
 
 /*
   06
@@ -153,24 +173,17 @@ console.log(personalInfo.greetingMessage())
     - Faça isso até que 7 valores truthy sejam passados.
 */
 
-const isTruthyOrFalsy = value => {
-  const falsyValues = [null, undefined, false, NaN, 0]
-  return falsyValues.includes(value) ? 'falsy' : 'truthy'
-}
+const isTruthyOrFalsy = value => Boolean(value) ? 'truthy' : 'falsy'
 
-console.log(isTruthyOrFalsy(null))
-console.log(isTruthyOrFalsy(undefined))
-console.log(isTruthyOrFalsy(false))
-console.log(isTruthyOrFalsy(NaN))
-console.log(isTruthyOrFalsy(0))
-console.log(isTruthyOrFalsy(true))
-console.log(isTruthyOrFalsy('oi'))
-console.log(isTruthyOrFalsy(23))
-console.log(isTruthyOrFalsy(2.3))
-console.log(isTruthyOrFalsy([]))
-console.log(isTruthyOrFalsy({}))
-console.log(isTruthyOrFalsy(getPronoun('F')))
+const falsyValues = [false, 0, '', null, undefined, NaN]
+const truthyValues = [true, '0', ()=> {}, {}, [], -1, 'false']
 
+const logFalsyValues = falsyValue => console.log(isTruthyOrFalsy(falsyValue))
+const logTruthyValues = truthyValue => console.log(isTruthyOrFalsy(truthyValue))
+
+// falsyValues.forEach(logFalsyValues)
+
+// truthyValues.forEach(logTruthyValues)
 
 /*
   07
@@ -191,31 +204,55 @@ console.log(isTruthyOrFalsy(getPronoun('F')))
   Dica: propriedades de objetos podem ser declaradas como strings.
 */
 
-const displayBook = bookName => {
-  const books = {
-    'Povo Brasileiro': {
-      pages: 219,
-      author: 'Darcy Ribeiro',
-      publisher: 'Editora 1'
-    },
-    'Dom Casmurro': {
-      pages: 315,
-      author: 'Machado de Assis',
-      publisher: 'Editora 2'
-    },
-    'Clara dos Anjos': {
-      pages: 127,
-      author: 'Lima Barreto',
-      publisher: 'Editora 3'
-    }
+// const displayBook = bookName => {
+//   const books = {
+//     'Povo Brasileiro': {
+//       pages: 219,
+//       author: 'Darcy Ribeiro',
+//       publisher: 'Editora 1'
+//     },
+//     'Dom Casmurro': {
+//       pages: 315,
+//       author: 'Machado de Assis',
+//       publisher: 'Editora 2'
+//     },
+//     'Clara dos Anjos': {
+//       pages: 127,
+//       author: 'Lima Barreto',
+//       publisher: 'Editora 3'
+//     }
 
-  }
+//   }
   
-  if (books[bookName] === undefined) {
-      return books
-  }
+//   if (books[bookName] === undefined) {
+//       return books
+//   }
     
-  return books[bookName]
+//   return books[bookName]
+// }
+
+// console.log(displayBook('Clara dos Anjos'))
+
+const getBook = bookName => {
+  const books = {
+    'Jurassic Park': {
+      totalPages: 466,
+      author: 'Michel Crichton',
+      publisher: 'Ballantine Books'
+    },
+    'As Armas da Persuasão': {
+      totalPages: 304,
+      author: 'Robert Cialdini',
+      publisher: 'Sextante'
+    },
+    '2001: Uma Odisséia no Espaço': {
+      totalPages: 336,
+      author: 'Arthur C. Clarke',
+      publisher: 'Aleph'
+    }
+  }
+
+  return books[bookName] || books
 }
 
-console.log(displayBook('Clara dos Anjos'))
+// console.log(getBook('Jurassic Park'))
