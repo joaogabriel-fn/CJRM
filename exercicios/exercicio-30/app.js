@@ -8,6 +8,30 @@
     dados dos usuários."
 */
 
+const getUsers = url => new Promise((resolve, reject) => {
+  const request = new XMLHttpRequest()
+  request.addEventListener('readystatechange', () => {
+    const requestIsOk = request.readyState === 4 && request.status === 200
+    const requestIsNotOk = request.readyState === 4
+
+    if (requestIsOk) {
+      const data = JSON.parse(request.responseText)
+      resolve(data)
+    }
+
+    if (requestIsNotOk) {
+      reject('Não foi possível obter os dados dos usuários')
+    }
+  })
+
+  request.open('GET', url)
+  request.send()
+})
+
+// getUsers('https://jsonplaceholder.typicode.com/users')
+//   .then(value => console.log(value))
+//   .catch(error => console.log(error))
+
 /*
   02
 
@@ -22,6 +46,21 @@
   - Se o operador não for válido, retorne a mensagem "Operação inválida."
 */
 
+// const mathOperation = (firstNumber, secondNumber) => {
+//   const obj = {
+//     '+': firstNumber + secondNumber,
+//     '-': firstNumber - secondNumber,
+//     '*': firstNumber * secondNumber,
+//     '/': firstNumber / secondNumber,
+//     '%': firstNumber % secondNumber,
+//   }
+//   return obj[operator]
+// }
+
+// const calculator = operator => mathOperation()
+
+// console.log(calculator('%'))
+
 /*
   03
 
@@ -35,6 +74,15 @@
   - Crie um novo array chamado `newSul`, que recebe somente os estados do sul,
     pegando do array `brasil`. Não remova esses itens de `brasil`.
 */
+
+const sul = ['Santa Catarina', 'Paraná', 'Rio Grande do Sul']
+const sudeste = ['Minas Gerais', 'São Paulo', 'Rio de Janeiro', 'Espírito Santo']
+let brasil = sul.concat(sudeste)
+brasil.unshift('Amazonas', 'Pará', 'Roraima')
+console.log(brasil.shift())
+console.log(brasil)
+const newSul = brasil.filter(state => sul.includes(state))
+console.log(newSul)
 
 /*
   04
@@ -55,6 +103,36 @@
     every.
 */
 
+const nordeste = [
+  'Maranhão', 
+  'Piauí', 
+  'Ceará', 
+  'Rio Grande do Norte', 
+  'Paraíba', 
+  'Pernambuco', 
+  'Alagoas', 
+  'Sergipe', 
+  'Bahia'
+]
+
+const newSudeste = brasil.splice(5)
+brasil = brasil.concat(nordeste)
+console.log(brasil)
+
+const newBrasil = brasil.reduce((acc, state, index) => {
+  newState = {id: index, estado: state}
+  acc.push(newState)
+  return acc
+}, [])
+
+console.log(newBrasil)
+
+const isLengthGreaterThanSeven = ({ length }) => length > 7
+
+console.log(brasil.every(isLengthGreaterThanSeven) 
+  ? 'Sim, todos os estados tem mais de 7 letras.' 
+  : 'Nem todos os estados tem mais de 7 letras.')
+
 /*
   05
 
@@ -68,3 +146,18 @@
   - Filtre o array criado acima, retornando somente os estados que tiverem ID 
     par. Atribua este novo array à uma constante.
 */
+
+const isCearaIncluded = brasil.includes('Ceará')
+console.log(isCearaIncluded
+  ? 'Ceará está incluído.'
+  : 'Ceará não foi incluído =/')
+
+const modifyNewBrasil = ({ id, estado }) => 
+  ({id: id+1, estado: `${estado} pertence ao Brasil.`})
+const modifiedNewBrasil = newBrasil.map(modifyNewBrasil)
+
+console.log(modifiedNewBrasil, newBrasil)
+
+const isIdEven = ({ id }) => id % 2 === 0
+const statesWithEvenId = modifiedNewBrasil.filter(isIdEven)
+console.log(statesWithEvenId)

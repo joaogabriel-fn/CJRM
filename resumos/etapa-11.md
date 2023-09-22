@@ -279,4 +279,129 @@ getTodos((error, data) => {
 ```
 
 ## Callback Hell (Pyramid of Doom)
+A situação conhecida como "Callback hell" ocorre normalmente quando precisamos puxar dados baseados no resultado de um request, onde é inicado um ciclo de aninhamento de requests no código, formando uma espécie de triângulo na identação. Para exemplificar este cenário, vamos simular a obtenção de dados de 3 endpoints diferentes, que só serão executados assim que o anterior for finalizado.
 
+```js
+const getTodos = (url, callback) => {
+  const request = new XMLHttpRequest()
+
+  request.addEventListener('readystatechange', () => {
+    const isRequestOK = request.readyState === 4 && request.status === 200
+    const isRequestNotOK = request.readyState === 4
+    
+    if (isRequestOK) {
+      const data = JSON.parse(request.responseText)
+      callback(null, data)
+      return
+    }
+
+    if (isRequestNotOK) {
+      callback('Não foi possível obter os dados da API', null)
+    }
+  })
+
+  request.open('GET', url)
+  request.send()
+}
+
+getTodos('./json/todos.json', (error, data) => {
+  console.log(data)
+  getTodos('./json/todos-02.json', (error, data) => {
+    console.log(data)
+    getTodos('./json/todos-03.json', (error, data) => {
+      console.log(data)
+    })
+  })
+})
+```
+
+Ao observar o final do código, podemos ver que o aninhamento de fato criou o formato triangular, o que torna o nosso código pouco legível e dificulta a manutenção.
+
+## Introdução a promises
+Uma boa maneira de evitar casos de *Callback Hell*, é a utilização de *promises*, mas afinal, o que são promises?
+### Uma *Promise* é um objeto JavaScript que representa o sucesso ou a falha de uma operação **assíncrona**.
+
+Como parâmetros do construtor da Promise, é necessário passar como argumento 2 funções, uma resolve e outra reject, quando a operação for bem sucedida resolve será executada, já quando falhar, será executada a reject.
+
+Quando uma ação assíncrona "monitorada" pela promise é executada com sucesso, ela ira retornar no console, de forma encapsulada, seu estado. Para acessarmos isto, é necessário utilizar o método .then(), que é responsável por receber a resposta da promise.
+
+Já quando desejamos obter os dados retornados em caso de erro da operação assíncrona, precisamos encadear no método then o método .catch(). Abaixo temos o exemplo de como funciona a criação e consumo de uma promise.
+
+```js
+const getData = () => {
+  return new Promise((resolve, reject) => {
+     resolve('Dados aqui')
+     reject('Erro aqui')
+  })
+}
+
+getData()
+  .then(value => console.log(value))
+  .catch(error => console.log(error))
+```
+
+Vamos agora aplicar este conceito ao request feito no exercício anterior, fazendo que seja retornado uma promise.
+
+```js
+const getTodos = url => new Promise((resolve, reject) => {
+  const request = new XMLHttpRequest()
+
+  request.addEventListener('readystatechange', () => {
+    const isRequestOK = request.readyState === 4 && request.status === 200
+    const isRequestNotOK = request.readyState === 4
+    
+    if (isRequestOK) {
+      const data = JSON.parse(request.responseText)
+      resolve(data)
+    }
+
+    if (isRequestNotOK) {
+      reject('Não foi possível obter os dados da API')
+    }
+  })
+
+  request.open('GET', url)
+  request.send()
+})
+
+getTodos('https://pokeapi.co/api/v2/pokemon/1')
+  .then(pokemon => console.log(pokemon))
+  .catch(error => console.log(error))
+```
+
+Agora que entendemos o funcionamento básico de promises, vamos voltar ao exemplo de encadeamento que nos causou um Callback Hell e resolver isto utilizando o conceito que aprendemos. Para isso, na invocação da getTodos, que será agora renomeada para getPokemons, vamos encadear os demais requests dentro do método .then(), assim sempre que a operação for bem sucedida o próximo request será executado.
+
+```js
+const getPokemon = url => new Promise((resolve, reject) => {
+  const request = new XMLHttpRequest()
+
+  request.addEventListener('readystatechange', () => {
+    const isRequestOK = request.readyState === 4 && request.status === 200
+    const isRequestNotOK = request.readyState === 4
+    
+    if (isRequestOK) {
+      const data = JSON.parse(request.responseText)
+      resolve(data)
+    }
+
+    if (isRequestNotOK) {
+      reject('Não foi possível obter os dados da API')
+    }
+  })
+
+  request.open('GET', url)
+  request.send()
+})
+
+getPokemon('https://pokeapi.co/api/v2/pokemon/1')
+  .then(bulbasaur => {
+    console.log(bulbasaur)
+    return getPokemon('https://pokeapi.co/api/v2/pokemon/4')
+  })
+  .then(charmander => {
+    console.log(charmander)
+    return getPokemon('https://pokeapi.co/api/v2/pokemon/7')
+  })
+  .then(squirtle => console.log(squirtle))
+  .catch(error => console.log(error))
+```

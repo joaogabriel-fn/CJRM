@@ -13,6 +13,76 @@
       executado quando o request anterior for finalizado.
 */
 
+// const requestPokemon = (url, callback) => {
+//   const request = new XMLHttpRequest()
+
+//   request.addEventListener('readystatechange', () => {
+//     if (request.readyState === 4 && request.status === 200) {
+//       const data = JSON.parse(request.responseText)
+//       callback(null, data)
+//       return
+//     }
+
+//     if (request.readyState === 4) {
+//       callback('Não foi possível obter o Pokémon', null)
+//     }
+//   })
+
+//   request.open('GET', url)
+//   request.send()
+// }
+
+// requestPokemon('https://pokeapi.co/api/v2/pokemon/bulbasaur', (error, data) => {
+//   error === null ? console.log(data.name) : console.log(error)
+//   requestPokemon('https://pokeapi.co/api/v2/pokemon/charmander', (error, data) => {
+//     error === null ? console.log(data.name) : console.log(error)
+//     requestPokemon('https://pokeapi.co/api/v2/pokemon/squirtle', (error, data) => {
+//       error === null ? console.log(data.name) : console.log(error)
+//     })
+//   })
+// })
+
+const requestPokemon = (url, callback) => {
+  const request = new XMLHttpRequest()
+
+  request.addEventListener('readystatechange', () => {
+    const isRequestOk = request.readyState === 4 && request.status === 200
+    const isRequestNotOk = request.readyState === 4
+    if (isRequestOk) {
+      const data = JSON.parse(request.responseText)
+      callback(null, data)
+      return
+    }
+
+    if (isRequestNotOk) {
+      callback('Não foi possível obter o Pokémon', null)
+    }
+  })
+
+  request.open('GET', url)
+  request.send()
+}
+
+const logPokemonData = (error, data) => error 
+  ? console.log(error) 
+  : console.log(`Pokémon obtido: ${data.name}`)
+
+const getPokemonUrl = id => `https://pokeapi.co/api/v2/pokemon/${id}`
+
+const bulbasaur = getPokemonUrl(1)
+const charmander = getPokemonUrl(4)
+const squirtle = getPokemonUrl(7)
+
+requestPokemon(charmander, (error, data) => {
+  logPokemonData(error, data)
+  requestPokemon(charmander, (error, data) => {
+    logPokemonData(error, data)
+    requestPokemon(squirtle, (error, data) => {
+      logPokemonData(error, data)
+    })
+  })
+})
+
 /*
   02
 
@@ -32,6 +102,34 @@
     2) Pesquisar no MDN.
 */
 
+// const map = (array=[], callback) => {
+//   let newArray = []
+
+//   for (let i = 0; i < array.length; i++) {
+//     newArray.push(callback(array[i]))
+//   }
+
+//   return newArray
+// }
+
+// console.log(map([1, 2, 3], number => number * 2))
+// console.log(map([1, 2, 3], number => number * 3))
+
+const map = (array, func) => {
+  let newArray = []
+  const addNewItemToNewArray = item => {
+    const newItem = func(item)
+    newArray.push(newItem)
+  }
+  
+  array.forEach(addNewItemToNewArray)
+
+  return newArray
+}
+
+// console.log(map([1, 2, 3], number => number * 2))
+// console.log(map([4, 5, 6], number => number * 10))
+
 /*
   03
 
@@ -41,10 +139,18 @@
 
 const person = {
   name: 'Roger',
-  getName: () => this.name
+  getName () {
+    return this.name
+  }
+}
+
+const person2 = {
+  name: 'Roger',
+  getName: () => person.name
 }
 
 // console.log(person.getName())
+// console.log(person2.getName())
 
 /*
   04
@@ -56,7 +162,19 @@ const person = {
 */
 
 const x = 'x'
-// const x = 'y'
+
+// if (true) {
+//   const x = 'y'
+//   console.log(x)
+// }
+// console.log(x)
+
+const getX = () => {
+  const x = 'y'
+  return x
+}
+
+// console.log(x, getX())
 
 /*
   05
@@ -65,14 +183,9 @@ const x = 'x'
     conseguir.
 */
 
-const getFullName = (user) => {
-  const firstName = user.firstName
-  const lastName = user.lastName
+const getFullName = ({ firstName, lastName }) => `${firstName} ${lastName}`
 
-  return `${firstName} ${lastName}`
-}
-
-console.log(getFullName({ firstName: 'Afonso', lastName: 'Solano' }))
+// console.log(getFullName({ firstName: 'Afonso', lastName: 'Solano' }))
 
 /*
   06
@@ -88,6 +201,58 @@ console.log(getFullName({ firstName: 'Afonso', lastName: 'Solano' }))
   - Exiba o hexadecimal de 8 cores diferentes usando a função criada acima.
 */
 
+// const convertToHex = colorName => {
+//   const hexColors = {
+//     red: '1',
+//     green: '2',
+//     purple: '3',
+//     orange: '4',
+//     yellow: '5',
+//   }
+
+//   hexConversion = `O hexadecimal para a cor COR é ${hexColors[colorName.toLowerCase()]}`
+//   errorMessage = `Não temos o equivalente hexadecimal para ${colorName}`
+
+//   return hexColors[colorName] ? errorMessage : hexConversion
+// }
+
+// const colorsToConvert = ['red', 'green', 'yellow', 'magenta', 'white', 'black', 'brown']
+
+// const convertColorToHex = color => console.log(convertToHex(color))
+
+// colorsToConvert.forEach(convertColorToHex)
+
+const convertToHex = color => {
+  const colors = {
+    red: '#A31419',
+    green:'#10A337',
+    blue:'#4C91F0',
+    yellow:'#F0EA6F',
+    purple:'#8132A3'
+  }
+
+  return colors[color] 
+    ? `O hexadecimal para a cor ${color} é ${colors[color]}`
+    : `Não temos o equivalente hexadecimal para ${color}`
+}
+
+const colors = [
+  'blue',
+  'black',
+  'red',
+  'green',
+  'pink',
+  'yellow',
+  'purple',
+  'brown',
+]
+
+const logColorMessage = color => console.log(convertToHex(color))
+
+colors.forEach(logColorMessage)
+
+console.log(convertToHex('red'))
+console.log(convertToHex('black'))
 
 /*
   07
@@ -112,3 +277,11 @@ const people = [
   { id: 9 , name: 'Gabriel', age: 20, federativeUnit: 'São Paulo' },
   { id: 73, name: 'Aline', age: 19, federativeUnit: 'Brasília' }
 ]
+
+const createOrIncrementAgeFrequency = (acc, { age }) => {
+  acc[age] = acc[age] + 1 || 1
+  return acc
+}
+
+const agesFrequency = people.reduce(createOrIncrementAgeFrequency, {})
+console.log(agesFrequency)
