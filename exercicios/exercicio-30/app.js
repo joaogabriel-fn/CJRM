@@ -10,16 +10,17 @@
 
 const getUsers = url => new Promise((resolve, reject) => {
   const request = new XMLHttpRequest()
-  request.addEventListener('readystatechange', () => {
-    const requestIsOk = request.readyState === 4 && request.status === 200
-    const requestIsNotOk = request.readyState === 4
 
-    if (requestIsOk) {
+  request.addEventListener('readystatechange', () => {
+    const isRequestOk = request.readyState === 4 && request.status === 200
+    const isRequestNotOk = request.readyState === 4
+
+    if (isRequestOk) {
       const data = JSON.parse(request.responseText)
       resolve(data)
     }
 
-    if (requestIsNotOk) {
+    if (isRequestNotOk) {
       reject('Não foi possível obter os dados dos usuários')
     }
   })
@@ -28,6 +29,9 @@ const getUsers = url => new Promise((resolve, reject) => {
   request.send()
 })
 
+// getUsers('https://jsonplaceholder.typicode.com/users')
+//   .then(console.log)
+//   .catch(console.log)
 // getUsers('https://jsonplaceholder.typicode.com/users')
 //   .then(value => console.log(value))
 //   .catch(error => console.log(error))
@@ -46,21 +50,38 @@ const getUsers = url => new Promise((resolve, reject) => {
   - Se o operador não for válido, retorne a mensagem "Operação inválida."
 */
 
-// const mathOperation = (firstNumber, secondNumber) => {
-//   const obj = {
-//     '+': firstNumber + secondNumber,
-//     '-': firstNumber - secondNumber,
-//     '*': firstNumber * secondNumber,
-//     '/': firstNumber / secondNumber,
-//     '%': firstNumber % secondNumber,
+const getOperationMessage = (num1, operator, num2, operation) =>
+ `${num1} ${operator} ${num2} = ${operation}`
+
+// const calculator = operator => (num1, num2) => {
+//   const operations = {
+//     '+': getOperationMessage(num1, operator, num2, num1+num2),
+//     '-': getOperationMessage(num1, operator, num2, num1-num2),
+//     '*': getOperationMessage(num1, operator, num2, num1*num2),
+//     '/': getOperationMessage(num1, operator, num2, num1/num2),
+//     '%': getOperationMessage(num1, operator, num2, num1%num2),
 //   }
-//   return obj[operator]
+
+//   return operations[operator] || 'Operação inválida.'
 // }
 
-// const calculator = operator => mathOperation()
+const calculator = operator => (num1, num2) => ({
+  '+': getOperationMessage(num1, operator, num2, num1+num2),
+  '-': getOperationMessage(num1, operator, num2, num1-num2),
+  '*': getOperationMessage(num1, operator, num2, num1*num2),
+  '/': getOperationMessage(num1, operator, num2, num1/num2),
+  '%': getOperationMessage(num1, operator, num2, num1%num2),
+})[operator] || 'Operação inválida.'
 
-// console.log(calculator('%'))
+const sum = calculator('+')
+const subtraction = calculator('-')
+const multiplication = calculator('*')
+const division = calculator('/')
 
+// console.log(sum(1, 1))
+// console.log(subtraction(5, 4))
+// console.log(multiplication(2, 2))
+// console.log(division(10, 2))
 /*
   03
 
@@ -75,13 +96,28 @@ const getUsers = url => new Promise((resolve, reject) => {
     pegando do array `brasil`. Não remova esses itens de `brasil`.
 */
 
+// const sul = ['Santa Catarina', 'Paraná', 'Rio Grande do Sul']
+// const sudeste = ['Minas Gerais', 'São Paulo', 'Rio de Janeiro', 'Espírito Santo']
+// let brasil = sul.concat(sudeste)
+// brasil.unshift('Amazonas', 'Pará', 'Roraima')
+// console.log(brasil.shift())
+// console.log(brasil)
+// const newSul = brasil.filter(state => sul.includes(state))
+// console.log(newSul)
+
 const sul = ['Santa Catarina', 'Paraná', 'Rio Grande do Sul']
-const sudeste = ['Minas Gerais', 'São Paulo', 'Rio de Janeiro', 'Espírito Santo']
+const sudeste = [
+  'Minas Gerais',
+  'Espírito Santo',
+  'Rio de Janeiro',
+  'São Paulo'
+]
+
 let brasil = sul.concat(sudeste)
-brasil.unshift('Amazonas', 'Pará', 'Roraima')
+brasil.unshift('Amazonas', 'Acre', 'Rondônia')
 console.log(brasil.shift())
-console.log(brasil)
-const newSul = brasil.filter(state => sul.includes(state))
+
+const newSul = brasil.slice(2, 5)
 console.log(newSul)
 
 /*
@@ -103,6 +139,36 @@ console.log(newSul)
     every.
 */
 
+// const nordeste = [
+//   'Maranhão', 
+//   'Piauí', 
+//   'Ceará', 
+//   'Rio Grande do Norte', 
+//   'Paraíba', 
+//   'Pernambuco', 
+//   'Alagoas', 
+//   'Sergipe', 
+//   'Bahia'
+// ]
+
+// const newSudeste = brasil.splice(5)
+// brasil = brasil.concat(nordeste)
+// console.log(brasil)
+
+// const newBrasil = brasil.reduce((acc, state, index) => {
+//   newState = {id: index, estado: state}
+//   acc.push(newState)
+//   return acc
+// }, [])
+
+// console.log(newBrasil)
+
+// const isLengthGreaterThanSeven = ({ length }) => length > 7
+
+// console.log(brasil.every(isLengthGreaterThanSeven) 
+//   ? 'Sim, todos os estados tem mais de 7 letras.' 
+//   : 'Nem todos os estados tem mais de 7 letras.')
+
 const nordeste = [
   'Maranhão', 
   'Piauí', 
@@ -115,23 +181,17 @@ const nordeste = [
   'Bahia'
 ]
 
-const newSudeste = brasil.splice(5)
+const newSudeste = brasil.splice(5, 4)
 brasil = brasil.concat(nordeste)
-console.log(brasil)
 
-const newBrasil = brasil.reduce((acc, state, index) => {
-  newState = {id: index, estado: state}
-  acc.push(newState)
-  return acc
-}, [])
+const newBrasil = brasil.map((item, index) => ({ id: index, estado: item }))
 
-console.log(newBrasil)
+const hasMoreThan7Letters = brasil.every(item => item.length > 7)
+const message = hasMoreThan7Letters
+  ? 'Sim, todos os estados tem mais de 7 letras.'
+  : 'Nem todos os estados tem mais de 7 letras.'
 
-const isLengthGreaterThanSeven = ({ length }) => length > 7
-
-console.log(brasil.every(isLengthGreaterThanSeven) 
-  ? 'Sim, todos os estados tem mais de 7 letras.' 
-  : 'Nem todos os estados tem mais de 7 letras.')
+console.log(message)
 
 /*
   05
@@ -147,17 +207,32 @@ console.log(brasil.every(isLengthGreaterThanSeven)
     par. Atribua este novo array à uma constante.
 */
 
+// const isCearaIncluded = brasil.includes('Ceará')
+// console.log(isCearaIncluded
+//   ? 'Ceará está incluído.'
+//   : 'Ceará não foi incluído =/')
+
+// const modifyNewBrasil = ({ id, estado }) => 
+//   ({id: id+1, estado: `${estado} pertence ao Brasil.`})
+// const modifiedNewBrasil = newBrasil.map(modifyNewBrasil)
+
+// console.log(modifiedNewBrasil, newBrasil)
+
+// const isIdEven = ({ id }) => id % 2 === 0
+// const statesWithEvenId = modifiedNewBrasil.filter(isIdEven)
+// console.log(statesWithEvenId)
+
 const isCearaIncluded = brasil.includes('Ceará')
-console.log(isCearaIncluded
+const cearaMessage = isCearaIncluded
   ? 'Ceará está incluído.'
-  : 'Ceará não foi incluído =/')
+  : 'Ceará não foi incluído =/'
+console.log(cearaMessage)
 
-const modifyNewBrasil = ({ id, estado }) => 
-  ({id: id+1, estado: `${estado} pertence ao Brasil.`})
-const modifiedNewBrasil = newBrasil.map(modifyNewBrasil)
+const newNewBrasil = newBrasil.map(({ id, estado }) => ({
+  id: id + 1,
+  estado: `${estado} pertence ao Brasil.` 
+}))
+console.log(newNewBrasil)
 
-console.log(modifiedNewBrasil, newBrasil)
-
-const isIdEven = ({ id }) => id % 2 === 0
-const statesWithEvenId = modifiedNewBrasil.filter(isIdEven)
-console.log(statesWithEvenId)
+const filteredNewNewBrasil = newNewBrasil.filter(({ id }) => id % 2 === 0)
+console.log(filteredNewNewBrasil)
