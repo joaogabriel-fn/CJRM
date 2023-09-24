@@ -8,17 +8,27 @@
     do GitHub.
 */
 
-const getGithubUser = async () => {
-  const response = await fetch('https://api.github.com/users/joaogabriel-fn')
-  return await response.json()
-}
+// const getGithubUser = async () => {
+//   const response = await fetch('https://api.github.com/users/joaogabriel-fn')
+//   return await response.json()
+// }
 
-const logGithubUser = async () => {
-  const githubUser = await getGithubUser()
-  console.log(githubUser)
-}
+// const logGithubUser = async () => {
+//   const githubUser = await getGithubUser()
+//   console.log(githubUser)
+// }
 
 // logGithubUser()
+
+const fetchGithubUser = async username => {
+  const response = await fetch(`https://api.github.com/users/${username}`)
+  return response.json()
+}
+
+const logGithubUser = async username => 
+  console.log(await fetchGithubUser(username))
+
+// logGithubUser('joaogabriel-fn')
 
 /*
   02
@@ -29,9 +39,12 @@ const logGithubUser = async () => {
 */
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-const filterNumbers = item => item % 2 === 0 || item % 3 === 0
-const newNumbers = numbers.filter(filterNumbers)
+// const filterNumbers = item => item % 2 === 0 || item % 3 === 0
+// const newNumbers = numbers.filter(filterNumbers)
 // console.log(newNumbers)
+const getDivisibleBy2Or3 = numbers => numbers
+  .filter(number => number % 2 === 0 || number % 3 === 0)
+// console.log(getDivisibleBy2Or3(numbers))
 
 /*
   03
@@ -47,9 +60,15 @@ const newNumbers = numbers.filter(filterNumbers)
     - Rafaela => "PRaPfaPePla".
 */
 
-const myNameSyllables = ['Jo', 'ão']
-const myNameInPLanguage = myNameSyllables.reduce((acc, item) => acc += `P${item}`, '')
+// const myNameSyllables = ['Jo', 'ão']
+// const myNameInPLanguage = myNameSyllables.reduce((acc, item) => acc += `P${item}`, '')
 // console.log(myNameInPLanguage)
+
+const myName = ['Jo', 'ão']
+const getNameInPLanguage = (name) => name
+  .reduce((acc, syllable) => `${acc}P${syllable}`, '')
+// console.log(getNameInPLanguage(myName))
+
 /*
   04
 
@@ -64,8 +83,18 @@ const myNameInPLanguage = myNameSyllables.reduce((acc, item) => acc += `P${item}
 
   Dica: pesquise pelo método split.
 */
-const firstName = 'João'
+
+// const firstName = 'João'
 // firstName.split('').forEach((letter, index) => console.log(`"${letter}" é a ${index+1}ª letra do meu nome.`))
+
+const name = 'João'
+const logSplittedName = name => name
+  .split('')
+  .forEach((letter, index) =>
+    console.log(`"${letter}" é a ${index+1}ª letra do meu nome.`))
+
+// logSplittedName(name)
+
 /*
   05
 
@@ -79,13 +108,21 @@ const firstName = 'João'
   Dica: pesquise pelo método Object.keys().
 */
 
-const obj = {
-  name: '',
-  lastName: '',
-  age: 0
-}
+// const obj = {
+//   name: '',
+//   lastName: '',
+//   age: 0
+// }
 
 // console.log(Object.keys(obj))
+
+const person = {
+  name: 'Joao',
+  lastName: 'Gabriel',
+  age: 22
+}
+
+// console.log(Object.keys(person))
 
 /*
   06
@@ -102,17 +139,23 @@ const obj = {
 
 const scores = [100, 90, 85, 100, 60, 85, 100, 90, 55, 75, 60]
 
-const countOccurences = (array=[], value) => {
-  const countItemInArray = (acc, item) => {
-    item === value ? acc++ : acc
-    return acc
-  }
+// const countOccurences = (array=[], value) => {
+//   const countItemInArray = (acc, item) => {
+//     item === value ? acc++ : acc
+//     return acc
+//   }
 
-  const counter = array.reduce(countItemInArray, 0)
+//   const counter = array.reduce(countItemInArray, 0)
   
-  return counter
-}
+//   return counter
+// }
 // console.log(countOccurences(scores, 100))
+
+const getOccurrences = (array, value) => 
+  array.reduce((acc, item) => value === item ? acc + 1 : acc, 0)
+
+// console.log(getOccurrences(scores, 100))
+
 /*
   07
 
@@ -137,17 +180,16 @@ const countOccurences = (array=[], value) => {
   que está sendo gerado **apenas** se a função retorna um valor truthy.
 */
 
-const filter = (array, callback) => {
-  let newArray = []
-  array.forEach((item, index, array) => {
-    if (callback(item, index, array)) {
-      newArray.push(item)
-    }
+// const filter = (array, callback) => {
+//   let newArray = []
+//   array.forEach((item, index, array) => {
+//     if (callback(item, index, array)) {
+//       newArray.push(item)
+//     }
     
-  })
-  return newArray
-}
-
+//   })
+//   return newArray
+// }
 
 // console.log(filter([1, 2, 3], item => item))
 // console.log(filter([0, 1, 2], item => item))
@@ -155,3 +197,26 @@ const filter = (array, callback) => {
 // console.log(filter([1, 2, 3, 5], (item, index) => item === index + 1))
 // console.log(filter([1, 2, 3, 2, 1, 5], (item, index, array) =>
 //   index === array.indexOf(item)))
+
+const filter = (array, func) => {
+  let newArray = []
+
+  const filterItem = (item, index, array) => {
+    const itemShouldBeAdded = func(item, index, array)
+    
+    if (itemShouldBeAdded) {
+      newArray.push(item)
+    }
+  }
+
+  array.forEach(filterItem)
+
+  return newArray
+}
+
+console.log(filter([1, 2, 3], item => item))
+console.log(filter([0, 1, 2], item => item))
+console.log(filter([1, 2, 3], item => item < 2))
+console.log(filter([1, 2, 3, 5], (item, index) => item === index + 1))
+console.log(filter([1, 2, 3, 2, 1, 5], (item, index, array) =>
+  index === array.indexOf(item)))
