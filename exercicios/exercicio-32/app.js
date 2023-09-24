@@ -24,24 +24,29 @@ const form = document.querySelector('form')
 const output = document.querySelector('.out')
 const url = 'https://api.giphy.com/v1/gifs/search?api_key=bd0KNMTDz7nOPUPlGyrY4nvH2lFj3K4N&limit=1&q='
 
-const getGif = async input => {
-  const response = await fetch(`${url}${input}`)
-  return await response.json()
-}
+const getGif = async input => await
+  (await fetch(`${url}${input}`))
+  .json()
 
 const pushGifIntoHTML = (input) => {
-  getGif(input)
-    .then(response => {
-      const gifToAdd = response.data[0].embed_url
-      const HTMLTemplate = `<iframe src=${gifToAdd} width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>`
+  const pushToHTML = response => {
+    const gifToAdd = response.data[0].embed_url
+    const HTMLTemplate = `<iframe src=${gifToAdd} width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>`
 
-      output.innerHTML += HTMLTemplate
-    })
+    output.innerHTML += HTMLTemplate
+  }
+
+  getGif(input)
+    .then(pushToHTML)
 }
 
-form.addEventListener('submit', e => {
+const handleFormSubmit = e => {
   e.preventDefault()
+  let inputValue = e.target.search.value
 
-  const inputValue = e.target.search.value
   pushGifIntoHTML(inputValue)
-})
+  
+  e.target.search.value = ''
+}
+
+form.addEventListener('submit', handleFormSubmit)

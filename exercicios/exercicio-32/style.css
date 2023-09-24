@@ -2,9 +2,53 @@ html {
   font-size: 20px;
   line-height: 1.6;
   font-family: Roboto, sans-serif;
+  color: #ffffff;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+}
+
+h1 {
+  padding: 15px;
+  border: 2px solid #e5e1e1c5;
+  border-radius: 5px;
+  border-style: groove;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 img {
   width: 100%;
   max-width: 100%;
+}
+
+.out {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 15x;
+}
+
+.giphy-embed {
+  margin-bottom: 5px;
+  padding: 15px;
+
+  border: 2px solid #e5e1e1c5;
+  border-radius: 5px;
+  border-style: groove;
 }
