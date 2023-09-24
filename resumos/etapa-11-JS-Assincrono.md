@@ -470,3 +470,111 @@ const logUsers = async () => {
 getUsers()
   .then(console.log)
 ```
+
+## Requests paralelos vs. Sequenciais
+Da forma que aprendemos os requests via fetch, utilizando o async/await, estamos realizando requests sequenciais, algo que pode ser extremamente útil quando um request depende da resposta de outro, já que o código só é executado a partir da resposta que a promise recebe. Se quisermos fazer requests paralelos, que não dependem da resposta do anterior para serem executados, é necessário remover o await do código e usar o construtor Promise encadeado pelo método .all(),
+que recebe um array de promises como argumento.
+
+Quando as promises do array passado para o método all() forem resolvidas, ele irá retornar um array com todos os valores das promises resolvidas.
+
+```js
+const getPokemons = async () => {
+  const bulbasaur = fetch('https://pokeapi.co/api/v2/pokemon/1')
+  const charmander = fetch('https://pokeapi.co/api/v2/pokemon/4')
+  const squirtle = fetch('https://pokeapi.co/api/v2/pokemon/7')
+
+  const results = await Promise.all([bulbasaur, charmander, squirtle])
+  console.log(results)
+}
+
+getPokemons()
+```
+Ao executar a função getPokemons(), será exibido no console um array com as 3 responses dos requests feitos. Se quisermos visualizar os dados de cada request feito, precisamos encadear um método forEach() no array de results, passando como argumento uma função de callback assíncrona, que retorna um console.log() com a response.json(). É necessário utilizar a palavra chave await, pois desejamos obter o valor apenas quando a promise for resolvida.
+
+```js
+const getPokemons = async () => {
+  const bulbasaur = fetch('https://pokeapi.co/api/v2/pokemon/1')
+  const charmander = fetch('https://pokeapi.co/api/v2/pokemon/4')
+  const squirtle = fetch('https://pokeapi.co/api/v2/pokemon/7')
+
+  const results = await Promise.all([bulbasaur, charmander, squirtle])
+  results.forEach(async response => console.log(await response.json()))
+}
+
+getPokemons()
+```
+
+## Tratando erros com try/catch
+As cláusulas try/catch são utilizadas em casos de erros, para ser possível manter a aplicação rodando mesmo se algo não ocorrer como esperado. Vamos exemplificar isto num cenário abaixo.
+
+Para o exemplo, iremos executar um console.log() com uma const não definida, isto obviamente lançará um erro no console, porém como isto é um erro conhecido, podemos dar instruções para a linguagem rodar algo quando este erro ocorrer.
+
+```js
+console.log(oi)
+console.log('oi')
+```
+
+Neste primeiro cenário, a aplicação irá lançar um erro no console e nada será executado abaixo disso.
+
+```js
+try {
+  console.log(oi)
+} catch (error) {
+  if (error.name === 'ReferenceError' && error.message === 'oi is not defined') {
+    const oi = 'const oi criada'
+    console.log(oi)
+  }
+}
+
+console.log('oi')
+```
+
+Já neste segundo cenário, o erro será lançado dentro do bloco try, onde o catch receberá o erro lançado como argumento e a partir disso podemos manipular o código.
+
+## Try/catch em requests e erros personalizados
+Para tratamento de erros em requests, vamos inserir a estrutura do try/catch dentro da função responsável pelo request.
+
+```js
+const getUsers = async () => {
+  try{
+    return await
+      (await fetch('https://jsonplaceholder.typicode.com/users'))
+      .json()
+  } catch(error) {
+    console.log(error.message)
+  }
+}
+
+const logUsers = async () => {
+  const users = await getUsers()
+  console.log(users)
+}
+
+logUsers()
+```
+
+Desta forma, quando ocorrer algum erro no request, apenas a mensagem de erro será retornada, entretanto, fetch APIs só retornam um erro na promise quando existe algum problema de conexão, fazendo com que o erro aconteça apenas no parseamento do json num caso de erro de endpoint, por exemplo. Para isso, podemos realizar verificações antes do retorno para o catch, lançando um erro personalizado com a cláusula throw.
+
+```js
+const getUsers = async () => {
+  try{
+    const response = await fetch('./json/todoss.json')
+
+    if (!response.ok) {
+      throw new Error('Não foi possível obter os dados')
+    }
+
+    return await
+      (await fetch('./json/todoss.json'))
+      .json()
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+const logUsers = async () => {
+  const users = await getUsers()
+  console.log(users)
+}
+
+logUsers()```
