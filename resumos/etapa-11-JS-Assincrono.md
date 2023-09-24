@@ -405,3 +405,68 @@ getPokemon('https://pokeapi.co/api/v2/pokemon/1')
   .then(squirtle => console.log(squirtle))
   .catch(error => console.log(error))
 ```
+
+## A fetch API
+Com o conhecimento sobre requests via objeto XMLHttpRequest(), podemos começar a estudar a fetch API, uma interface moderna nativa do JavaScript que permite a realização de requests com menos linhas de código do que a forma que vimos.
+
+Os requests via XMLHttpRequest são normalmente encontrados em códigos legado, atualmente a melhor prática é a utilização da fetch API.
+
+A fetch API trabalha com promises por baixo dos panos, ou seja, podemos encadear diretamente nela os métodos then e catch, porém, o catch só irá ser retornado no console caso exista um problema de conexão, caso contrário, um erro como endpoint incorre retornará o objeto do response normalmente, porém com o status 404.
+
+Para realizar requests via a fetch, é importante lembrar de 3 passos:
+1. Passar como argumento o endpoint.
+2. Retornar através do método .then() a response com o método .json(), que funcionará como o JSON.parse().
+3. Encadear um segundo then() que é responsável por finalmente fazer algo com os dados obtidos. 
+
+```js
+fetch('https://jsonplaceholder.typicode.com/users')
+  .then(response => {
+    console.log('Response', response)
+    return response.json()
+  })
+  .then(users => console.log(users))
+  .catch(error => console.log(error))
+```
+
+## Async/await
+Da mesma forma que a fetch API abstrai a forma de realizar requests, a async/await também é uma forma de abstrair as promises, permitindo a escrita de um código que é lido como se fosse síncrono.
+
+Quando realizamos requests com a fetch API, ocorre um encadeamento de .then() que pode tornar o código extremamente ilegível e dificultando a manutenção, portanto, a utilização do await torna a manipulação das promises muito mais fácil.
+
+A palavra-chave async, utilizada na criação de uma função, a transforma numa função assíncrona que sempre retornará uma promise.
+
+```js
+const getUsers = async () => {}
+//Retorna Promise {<fulfilled>: undefined}
+```
+
+Já a palavra-chave await, que só pode ser utilizada dentro de uma função async, é declarada antes da fetch, e serve para que o restante da função só seja executado quando obtiver uma resposta. 
+
+```js
+const getUsers = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/users')
+}
+```
+
+Para que seja retornado o objeto obtido, existem 2 opções, fazer com que a função retorne diretamente um await com a response encadeada pelo método .json(), ou atribuir a uma nova const a response com o método .json e retornar esta const.
+
+Já se quisermos utilizar os dados que são obtidos por esta função async, podemos encadear nela o método .then(), já que ela sempre irá retornar uma promise, ou podemos criar uma nova função que recebe a invocação da getUsers() dentro de uma const.
+
+```js
+const getUsers = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/users')
+  const users = await response.json()
+  return users
+  // Ou retornar diretamente o objeto
+  // return await response.json()
+}
+
+const logUsers = async () => {
+  const users = await getUsers()
+  console.log(users)
+}
+
+// ou encadear diretamente o .then
+getUsers()
+  .then(console.log)
+```
