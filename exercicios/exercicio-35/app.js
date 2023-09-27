@@ -4,6 +4,28 @@
   - Implemente uma função que recebe o nome da key de um item da localStorage 
     e retorna o valor da key parseado para objeto javascript.
 */
+// const users = [
+//   {name: 'Rodrigo', age: 32},
+//   {name: 'Jorge', age: 25}
+// ]
+
+// localStorage.setItem('users', JSON.stringify(users))
+
+// const myFunc = key => JSON.parse(localStorage.getItem(key))
+
+// console.log(myFunc('users'))
+
+const myObj = { x: 'x', y: 'y' }
+const myObjAsJSON = JSON.stringify(myObj)
+localStorage.setItem('myKey', myObjAsJSON)
+
+const getObjectFromLocalStorage = keyName => {
+  const keyValue = localStorage.getItem(keyName)
+  
+  return JSON.parse(keyValue)
+}
+
+// console.log(getObjectFromLocalStorage('myKey'))
 
 /*
   02
@@ -18,11 +40,11 @@
   Dica: pesquise por valueAsNumber.
 */
 
-const input = document.querySelector('[data-js="input"]')
+// const input = document.querySelector('[data-js="input"]')
 
-input.addEventListener('input', event => {
-  console.log(event.target.value)
-})
+// input.addEventListener('input', event => {
+//   console.log(event.target.valueAsNumber)
+// })
 
 /*
   03
@@ -39,28 +61,23 @@ input.addEventListener('input', event => {
     retornar 60 e a segunda invocação, 10.
 */
 
-function add100 (num) {
-  return num + 100
-}
+// const combineOperations = (number=0, arrayOfFunctions=[]) => arrayOfFunctions.reduce((acc, func) => func(acc), number)
 
-function divByFive (num) {
-  return num / 5
-}
+const add100 = num => num + 100
 
-function multiplyByThree (num) {
-  return num * 3
-}
+const divByFive = num => num / 5
 
-function multiplyFive (num) {
-  return num * 5
-}
+const multiplyByThree = num => num * 3
 
-function addTen (num) {
-  return num + 10
-}
+const multiplyFive = num => num * 5
 
-// console.log(combineOperations(0, [add100, divByFive, multiplyByThree]))
-// console.log(combineOperations(0, [divByFive, multiplyFive, addTen]))
+const addTen = num => num + 10
+
+const combineOperations = (initValue, arrOfFuncs) =>
+  arrOfFuncs.reduce((acc, func) => func(acc), initValue)
+
+console.log(combineOperations(0, [add100, divByFive, multiplyByThree]))
+console.log(combineOperations(0, [divByFive, multiplyFive, addTen]))
 
 /*
   04
@@ -101,9 +118,16 @@ const searchAlbum = {
   genre: 'Rock'
 }
 
-if (albums.includes(searchAlbum)) {
-  console.log(`${JSON.stringify(searchAlbum)} existe no array albums.`)
-}
+// if (JSON.stringify(albums).includes(JSON.stringify(searchAlbum))) {
+//   console.log(`${JSON.stringify(searchAlbum)} existe no array albums.`)
+// }
+
+const searchAlbumExistsInArray = albums
+  .some(album => album.id === searchAlbum.id)
+
+// if (searchAlbumExistsInArray) {
+//   console.log(`${JSON.stringify(searchAlbum)} existe no array albums.`)
+// }
 
 /*
   05
@@ -112,6 +136,7 @@ if (albums.includes(searchAlbum)) {
 */
 
 const obj = {
+  prop0: () => {},
   prop1: 'a',
   prop2: 'b',
   prop3: null,
@@ -121,6 +146,24 @@ const obj = {
   prop7: 7,
   prop8: { a: 'x', b: 'y' },
 }
+
+// const newObj = JSON.stringify(obj)
+// console.log(JSON.parse(newObj))
+
+const objCopy = { 
+  ...obj,
+  prop6: [
+    obj.prop6[0],
+    { ...obj.prop6[1] }
+  ],
+  prop8: {
+    ...obj.prop8
+  }
+}
+
+obj.prop1 = 'x'
+
+console.log(obj.prop6 === objCopy.prop6)
 
 /*
   06
@@ -132,6 +175,39 @@ const obj = {
 
   Dica: pesquise por Object.entries.
 */
+
+// const createHTMLElement = (elementToCreate, elementAttributes) => {
+//   const newElement = document.createElement(elementToCreate)
+
+//   for (const [key, value] of Object.entries(elementAttributes)) {
+//     newElement.setAttribute(key, value)
+//   }
+  
+//   return newElement
+// }
+
+// const newElement = createHTMLElement('div', {class: 'container', style: 'color: blue;'})
+// console.log(newElement)
+
+const createElement = (elementName, attributes) => {
+  const element = document.createElement(elementName)
+  const attributesAsArray = Object.entries(attributes)
+
+  attributesAsArray.forEach(([key, value]) => element.setAttribute(key, value))
+
+  return element
+}
+
+const input = createElement('input', {
+  type: 'radio',
+  id: 'input1',
+  name: 'main',
+  value: 'principal',
+  for: 'input1',
+  'data-js': 'input1'
+})
+
+console.log(input)
 
 /*
   07

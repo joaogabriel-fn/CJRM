@@ -12,6 +12,35 @@
     versão deve fazer o mesmo que a função anterior faz, mas de forma diferente.
 */
 
+// const getReversedString = string => string.split('').reverse().join('')
+
+// const getAnotherReversedString = string => {
+//   const splittedString = string.split('')
+//   const reversedString = []
+
+//   for (let i = 0; i < splittedString.length; i++) {
+//     const elementIndex = (splittedString.length -1) - i
+//     const element = splittedString[elementIndex]
+//     reversedString.push(element)
+//   }
+
+//   return reversedString.join('')
+// }
+
+// console.log(getReversedString('banana'))
+// console.log(getAnotherReversedString('banana'))
+
+const getReversedString = string => string
+  .split('')
+  .reverse()
+  .join('')
+
+const reverseString = string => string
+  .split('')
+  .reduce((acc, letter) => letter + acc, '')
+
+// console.log(reverseString('123'))
+
 /*
   02
   
@@ -19,15 +48,21 @@
 */
 
 const numbers = [5, 20, 7, 32, 47, 15, 83, 91, 27, 33]
-let foundNumber = false
+const foundNumber = (array, numberToFind) => array.includes(numberToFind)
 
-numbers.forEach(number => {
-  if (number === 15) {
-    foundNumber = true
-  }
-})
+// numbers.forEach(number => {
+//   if (number === 15) {
+//     foundNumber = true
+//   }
+// })
 
-console.log(foundNumber)
+// if (numbers.includes(15)) {
+//   foundNumber = true
+// }
+
+
+
+console.log(foundNumber(numbers, 15))
 
 /*
   03

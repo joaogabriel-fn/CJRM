@@ -17,6 +17,14 @@
   - Implemente a função da forma mais concisa que você conseguir.
 */
 
+// const shuffleArray = ([num1, num2, num3]) => [num3, num1, num2]
+
+// console.log(shuffleArray([3, 2, 1]))
+
+// const swap = ([first, , third]) => [third, first]
+
+// console.log(swap([953, 299, 384]))
+
 /*
   03
 
@@ -30,6 +38,10 @@ const topics = [
   { id: 3, name: 'Carreiras'}
 ]
 
+// const [, , { name }] = topics
+
+// console.log(name)
+
 /*
   04
 
@@ -39,6 +51,9 @@ const topics = [
 */
 
 const colors = ['#FF00FF', ['#FF0D0D', '#0AFA00', '#011EFA'], '#7BF0FF']
+
+const [, [red, green, blue]] = colors
+// console.log(red, green, blue)
 
 /*
   05
@@ -54,8 +69,24 @@ const colors = ['#FF00FF', ['#FF0D0D', '#0AFA00', '#011EFA'], '#7BF0FF']
     - Faça a função retornar "Olá, meu nome é [NOME]!".
 */
 
+// const greet = (obj, param2) => {
+//   const { [param2]: name='desconhecido' } = obj
+//   console.log(obj)
+//   return `Olá, meu nome é ${name}`
+// }
+
 // console.log(greet({ name: 'Roger' }, 'name'))
 // console.log(greet({}, 'personName'))
+
+const greet = (obj, dynamicName) => {
+  const { [dynamicName]: name = 'desconhecido' } = obj
+  return `Olá, meu nome é ${name}!`
+}
+
+console.log(greet({ name: 'Roger' }, 'name'))
+console.log(greet({}, 'personName'))
+
+
 
 /*
   06
@@ -69,6 +100,8 @@ const colors = ['#FF00FF', ['#FF0D0D', '#0AFA00', '#011EFA'], '#7BF0FF']
   - Não é necessário implementar condicionais, objetos, ou arrays para fazer
     isso.
 */
+
+
 
 /*
   07
