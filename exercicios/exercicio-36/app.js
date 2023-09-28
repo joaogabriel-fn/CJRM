@@ -166,36 +166,64 @@ const oddNumbers = [51, 97, 65, 23]
       1º slide, o slide anterior deve ser exibido.
 */
 
+// const nextButton = document.querySelector('[data-js="carousel__button--next"]')
+// const prevButton = document.querySelector('[data-js="carousel__button--prev"]')
+// const carouselItems = [...document.querySelectorAll('[data-js="carousel__item"]')]
+
+// let index = 0
+
+// nextButton.addEventListener('click', () => {
+//   index++
+//   if (index === 3) {
+//     index = 0
+//   }
+  
+//   carouselItems.forEach(item => {
+//     item.classList.remove('carousel__item--visible')
+//     item.classList.add('carousel__item--hidden')
+//   })
+
+//   carouselItems[index].classList.add('carousel__item--visible')
+// })
+
+// prevButton.addEventListener('click', () => {
+//   index--
+//   if (index === -1) {
+//     index = 2
+//   }
+  
+//   carouselItems.forEach(item => {
+//     item.classList.remove('carousel__item--visible')
+//     item.classList.add('carousel__item--hidden')
+//   })
+
+//   carouselItems[index].classList.add('carousel__item--visible')
+// })
+
+const slides = document.querySelectorAll('[data-js="carousel__item"]')
 const nextButton = document.querySelector('[data-js="carousel__button--next"]')
 const prevButton = document.querySelector('[data-js="carousel__button--prev"]')
-const carouselItems = document.querySelectorAll('[data-js="carousel__item"]')
-const carouselItemsArray = [...carouselItems]
+const lastSlideIndex = slides.length - 1
 
-let index = 0
+let currentSlideIndex = 0
+
+const manipulateSlidesClasses = (correctSlideIndex) => {
+  slides.forEach(slide => slide.classList.remove('carousel__item--visible'))
+  slides[correctSlideIndex].classList.add('carousel__item--visible')
+}
 
 nextButton.addEventListener('click', () => {
-  index++
-  if (index === 3) {
-    index = 0
-  }
-  
-  carouselItemsArray.forEach(item => {
-    item.classList.remove('carousel__item--visible')
-    item.classList.add('carousel__item--hidden')
-  })
+  const correctSlideIndex = currentSlideIndex === lastSlideIndex
+    ? currentSlideIndex = 0
+    : ++currentSlideIndex
 
-  carouselItemsArray[index].classList.add('carousel__item--visible')
+  manipulateSlidesClasses(correctSlideIndex)
 })
-prevButton.addEventListener('click', () => {
-  index--
-  if (index === -1) {
-    index = 2
-  }
-  
-  carouselItemsArray.forEach(item => {
-    item.classList.remove('carousel__item--visible')
-    item.classList.add('carousel__item--hidden')
-  })
 
-  carouselItemsArray[index].classList.add('carousel__item--visible')
+prevButton.addEventListener('click', () => {
+  const correctSlideIndex = currentSlideIndex === 0 
+    ? currentSlideIndex = lastSlideIndex 
+    : --currentSlideIndex
+
+  manipulateSlidesClasses(correctSlideIndex)
 })
