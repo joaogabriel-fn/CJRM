@@ -3,7 +3,7 @@
   
   - Atualmente, a invocação da função abaixo está retornando 
     "50,100,50undefinedundefined";
-  - Descubra o que o código abaixo está fazendo e faça a invocação da função 
+  - Descubra o que o código abaixo está fazendo e faça a invocação da função   
     retornar 200;
   - Não use a sintaxe item[index].
 */
@@ -21,11 +21,12 @@ const sum = (x, y, z) => x + y + z
 4
 */
 
-// const myName = 'joao'
-// const lowerName = [...myName]
-// lowerName[0] = lowerName[0].toUpperCase()
+const myName = 'joao'
 
-// console.log(...lowerName)
+const capitalizedName = [myName[0].toUpperCase(), ...myName.slice(1)].join('')
+
+// console.log(myName[0].toUpperCase() + myName.slice(1))
+// console.log(capitalizedName)
 
 /*
   03
@@ -41,7 +42,7 @@ const randomNumber = Math.round(Math.random() * 100)
 const obj = {
   a: 1,
   b: 2,
-  ...(randomNumber > 50 ? {c: 3} : {})
+  ...(randomNumber > 50 ? {c: 3} : {d: 4})
 }
 
 // console.log(obj)
@@ -53,17 +54,23 @@ const obj = {
     criado permaneça intacto.
 */
 
-/*
-função h => (obj) => {obj.d = 3}    ==> w {d: 3}
-
-*/
-
-const setObjDPropertyValue = obj => obj.d = 3
-
-const v = { k: 't' }
-
-setObjDPropertyValue(v)
+// const setObjDPropertyValue = obj => obj.d = 3
+// setObjDPropertyValue(v)
 // console.log(v)
+
+const third = obj => ({
+  ...obj,
+  d: 3
+})
+
+const second = obj => third(obj)
+
+const first = obj => second(obj)
+
+const object = { k: 't' }
+const object2 = first(object)
+first(object)
+console.log(object, object2)
 
 /*
   05
@@ -96,11 +103,16 @@ const timestamps = [
   }
 ]
 
-let newObj = {}
+// let newObj = {}
 
-timestamps.forEach(({ date, value }) => newObj[date] = value)
+// timestamps.forEach(({ date, value }) => newObj[date] = value)
 
-// console.log(newObj)
+const values = timestamps.reduce((acc, { date, value }) => {
+  acc[date] = value
+  return acc
+}, {})
+
+// console.log(values)
 
 /*
   06
@@ -122,20 +134,39 @@ timestamps.forEach(({ date, value }) => newObj[date] = value)
   Dica 2: o método forEach nunca retorna um valor.
 */
 
-const forEach = (arr, callback) => {
-  for (let i = 0; i < arr.length; i++) {
-    const element = arr[i];
-    callback(element)
-    console.log(`"${element}" é o ${i + 1}º item do array [${arr}]`)
+// const forEach = (arr, callback) => {
+//   for (let i = 0; i < arr.length; i++) {
+//     const element = arr[i];
+//     callback(element)
+//     console.log(`"${element}" é o ${i + 1}º item do array [${arr}]`)
+//   }
+// }
+// forEach(oddNumbers, number => accumulator += number)
+// console.log(accumulator)
+
+const forEach = (array, func) => {
+  for (let index = 0; index < array.length; index++) {
+    const item = array[index]
+    func(item, index, array)
   }
 }
 
 let accumulator = 0
 const oddNumbers = [51, 97, 65, 23]
 
-// forEach(oddNumbers, number => accumulator += number)
+const logMessage = (item, index, array) => { 
+  const message = 
+    `"${item}" é o ${index + 1}º item do array [${array.join(', ')}]`
+  
+  console.log(message)
+}
 
-// console.log(accumulator)
+const sumArrayItems = item => accumulator += item
+
+forEach(oddNumbers, logMessage)
+forEach(oddNumbers, sumArrayItems)
+console.log(accumulator)
+
 
 /*
   07
