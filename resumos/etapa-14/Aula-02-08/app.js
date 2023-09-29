@@ -12,7 +12,8 @@ class Mammal {
 }
 
 class Lion extends Mammal {
-  constructor () {
+  constructor (species, name, age, manEater) {
+    super(species, name, age)
     this.manEater = manEater
   }
 
@@ -29,4 +30,4 @@ const mufasa = new Lion('leão', 'Mufasa', 7, false)
 const animals = [zeca, pompeu, angus]
 
 mufasa.incrementAge()
-console.log(mufasa.eatZebras(animals))
+console.log(mufasa.eatZebras(animals), mufasa)

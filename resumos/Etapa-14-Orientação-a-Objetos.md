@@ -256,3 +256,41 @@ console.log(mufasa.eatZebras(animals))
 ```
 
 Agora, os objetos criados com a classe Lion possuem o método eatZebras(), e os animais criados com a classe Mammal não irão possuir esse método. Abaixo será exemplificado como adicionar propriedades únicas à classe herdada.
+
+```js
+class Mammal {
+  constructor (species, name, age) {
+    this.species = species
+    this.name = name
+    this.age = age
+    this.mammaryGland = true
+  }
+
+  incrementAge () {
+    this.age++
+  }
+}
+
+class Lion extends Mammal {
+  constructor (species, name, age, manEater) {
+    super(species, name, age)
+    this.manEater = manEater
+  }
+
+  eatZebras (animals) {
+    return animals.filter(animal => animal.species !== 'zebra')
+  }
+}
+
+const zeca = new Mammal('zebra', 'Zeca', 6)
+const pompeu = new Mammal('gnu', 'Pompeu', 5)
+const angus = new Mammal('cavalo', 'Angus', 3)
+const mufasa = new Lion('leão', 'Mufasa', 7, false)
+
+const animals = [zeca, pompeu, angus]
+
+mufasa.incrementAge()
+console.log(mufasa.eatZebras(animals), mufasa)
+```
+
+Agora para adicionarmos à classe Lion a propriedade "manEater", precisamos inserir um constructor dentro da classe, entretando, se fizermos isso receberemos um erro no console pedindo para que o super seja invocado. O super irá fazer com que o constructor da classe herdade seja invocado dentro do constructor da nova classe. Importante inserir no constructor da nova classe os parâmetros que serão passados como argumento do super, além da nova propriedade criada dentro do novo constructor.
