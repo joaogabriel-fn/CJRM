@@ -189,3 +189,70 @@ const user = new User('Joao', 'joao@gmail.com')
 user.login().addPoints()
 ```
 
+## Herança entre classes
+A herança entre classes é fazer com que uma subclasse receba propriedades e métodos de uma outra classe, para isso, é utilizada a palavra chave extends, conforme o exemplo abaixo:
+
+```js
+class Mammal {
+  constructor (species, name, age) {
+    this.species = species
+    this.name = name
+    this.age = age
+    this.mammaryGland = true
+  }
+
+  incrementAge () {
+    this.age++
+  }
+}
+
+class Lion extends Mammal {
+
+}
+
+const zeca = new Mammal('zebra', 'Zeca', 6)
+const pompeu = new Mammal('gnu', 'Pompeu', 5)
+const angus = new Mammal('cavalo', 'Angus', 3)
+const mufasa = new Lion('leão', 'Mufasa', 7)
+
+
+mufasa.incrementAge()
+console.log(mufasa)
+```
+
+Neste caso, estamos criando uma nova classe leão que recebe uma coṕia de todas os métodos e propriedades da classe de mamíferos, e se prestarmos atenção, vemos que a classe Lion não possui um constructor, pois quando trabalhamos com herança, se a classe que herdar as propriedades não tiver um constructor, ela herdará também o constructor.
+
+Agora vamos adicionar a nova classe Lion um método único dela, que não deve estar dentro da classe de mamíferos.
+
+```js
+class Mammal {
+  constructor (species, name, age) {
+    this.species = species
+    this.name = name
+    this.age = age
+    this.mammaryGland = true
+  }
+
+  incrementAge () {
+    this.age++
+  }
+}
+
+class Lion extends Mammal {
+  eatZebras (animals) {
+    return animals.filter(animal => animal.species !== 'zebra')
+  }
+}
+
+const zeca = new Mammal('zebra', 'Zeca', 6)
+const pompeu = new Mammal('gnu', 'Pompeu', 5)
+const angus = new Mammal('cavalo', 'Angus', 3)
+const mufasa = new Lion('leão', 'Mufasa', 7)
+
+const animals = [zeca, pompeu, angus]
+
+mufasa.incrementAge()
+console.log(mufasa.eatZebras(animals))
+```
+
+Agora, os objetos criados com a classe Lion possuem o método eatZebras(), e os animais criados com a classe Mammal não irão possuir esse método. Abaixo será exemplificado como adicionar propriedades únicas à classe herdada.
