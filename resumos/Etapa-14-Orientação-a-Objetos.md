@@ -294,3 +294,72 @@ console.log(mufasa.eatZebras(animals), mufasa)
 ```
 
 Agora para adicionarmos à classe Lion a propriedade "manEater", precisamos inserir um constructor dentro da classe, entretando, se fizermos isso receberemos um erro no console pedindo para que o super seja invocado. O super irá fazer com que o constructor da classe herdade seja invocado dentro do constructor da nova classe. Importante inserir no constructor da nova classe os parâmetros que serão passados como argumento do super, além da nova propriedade criada dentro do novo constructor.
+
+## Funções construtoras
+As classes no javascript na verdade não existem, o que temos na linguagem é conhecido como  *syntax sugar*, ou seja, uma abstração. Quando declaramos uma classe e utilizamos o typeof nela, vemos que o console retorna que ela é uma função, mas é importante sabermos que ela é uma **função construtora**.
+
+```js
+class Student {
+  constructor (name, email) {
+    this.name = name
+    this.email = email
+  }
+}
+
+const joaoGabriel = new Student('Joao Gabriel', 'joaogabriel@gmail.com')
+const giuliaBianchini = new Student('Giulia Bianchini', 'giuliabianchini@gmail.com')
+
+console.log(typeof Student)  // function
+```
+
+Podemos executar o mesmo processo acima utilizando uma função construtora, segue abaixo a conversão:
+
+```js
+function Student (name, email) {
+  this.name = name
+  this.email = email
+}
+
+const joaoGabriel = new Student('Joao Gabriel', 'joaogabriel@gmail.com')
+const giuliaBianchini = new Student('Giulia Bianchini', 'giu')
+
+console.log(joaoGabriel, giuliaBianchini)
+```
+
+Assim como no primeiro exemplo, a invocação da função construtora Student retornará num objeto, para que isso ocorra precisamos declarar a função com a primeira letra maiúscula, o que transforma ela numa função construtora.
+
+A função construtora sempre deve ser declarada com uma function declaration, pois se utilizarmos uma arrow function, o this irá referenciar o windows, não o novo objeto que será criado, porque o this dentro de uma arrow function sempre irá referenciar o escopo onde ela foi declarada.
+
+## Prototypes
+Quando "classes" são criadas através de funções construtoras, os métodos dentro delas são replicados para cada nova invocação, além de que um novo objeto é criado na memoria, reduzindo o desempenho da aplicação.
+
+Dentro do javascript, todo novo objeto herda propriedades e métodos do prototype, e o prototype é o objeto que armazena todos os métodos e propriedades que o novo objeto criado herdará. Todo objeto dentro do javascript possui um prototype com todos os métodos que ele herdará.
+
+Para armazenarmos um método dentro do prototype, e não no objeto, a propriedade .prototype() deve ser utilizada como um set, e não get, portanto: 
+
+```js
+function Student (name, email) {
+  this.name = name
+  this.email = email
+}
+
+Student.prototype.login = function () {
+  return `${this.name} fez login.`
+}
+
+const joaoGabriel = new Student('Joao Gabriel', 'joaogabriel@gmail.com')
+const giuliaBianchini = new Student('Giulia Bianchini', 'giulia@gmail.com')
+
+console.log(joaoGabriel.login === giuliaBianchini.login) // true
+```
+
+Com o código acima, o método login() agora estará armazenado no prototype do objeto, e a cada invocação não ocupara um novo espaço na memória.
+
+Quando tratamos de classes, a declaração de métodos fora do bloco constructor já os insere no prototype automaticamente.
+
+Se a criação de um método for feita sem o método prototype, estaremos criando um método estático. Métodos estáticos são normalmente utilitários e possuem funções que serão usadas durante o código, como formatar strings para um banco de dados, por exemplo, eles só existem a partir da invocação da função construtora, e quando invocamos um console.log, não veremos o método sendo exibido, para enxergarmos precisamos utilizar o console.dir.
+
+A declaração de um método estático dentro de uma classe precisa ser feito com a palavra chave static.
+
+## Herança prototipal
+

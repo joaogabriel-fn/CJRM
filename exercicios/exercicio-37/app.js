@@ -258,21 +258,33 @@ textArea.addEventListener('input', showCounterParagraph)
     reduce e um link para a documentação do método no MDN.
 */
 
-const reduce = (arr, newFunc, acc) => {
-  arr.forEach((item, index, array) => acc = newFunc(acc, item, index, array))
+// const reduce = (arr, func, acc) => {
+//   arr.forEach((item, index, array) => acc = func(acc, item, index, array))
+
+//   return acc
+// }
+
+const reduce = (arr, func, initialValue) => {
+  let acc = initialValue
+  
+  const accumulateCallbackReturn = (item, index, array) => {
+    acc = func(acc, item, index, array)
+  }
+
+  arr.forEach(accumulateCallbackReturn)
 
   return acc
 }
 
-// console.log(reduce([1, 2, 3], (acc, item) => acc + item, 0)) // 6
-// console.log(reduce([2, 3, 4], (acc, item) => acc + item, 0)) // 9
-// console.log(reduce(
-//   [1, 2],
-//   (acc, item) => {
-//     acc['number-' + item] = item
-//     return acc
-//   },
-//   {}
-// ))                                                            // {"number-1": 1, "number-2": 2};
-// console.log(reduce([1, 2], (acc, item, index) => acc + index, 0)) // 1;
-// console.log(reduce([1, 2], (acc, item, index, array) => acc + array[index], 0)) // 3;
+console.log(reduce([1, 2, 3], (acc, item) => acc + item, 0)) // 6
+console.log(reduce([2, 3, 4], (acc, item) => acc + item, 0)) // 9
+console.log(reduce(
+  [1, 2],
+  (acc, item) => {
+    acc['number-' + item] = item
+    return acc
+  },
+  {}
+))                                                            // {"number-1": 1, "number-2": 2};
+console.log(reduce([1, 2], (acc, item, index) => acc + index, 0)) // 1;
+console.log(reduce([1, 2], (acc, item, index, array) => acc + array[index], 0)) // 3;
