@@ -362,4 +362,127 @@ Se a criação de um método for feita sem o método prototype, estaremos criand
 A declaração de um método estático dentro de uma classe precisa ser feito com a palavra chave static.
 
 ## Herança prototipal
+A herança prototipal funciona como a herança de classes, porém, neste caso ocorre também a herança de métodos inseridos no protótipo da classe pai, para executarmos a funcionalidade, é necessário o uso do Object.create(), onde é passado como argumento o protótipo da classe pai, segue abaixo o exemplo, onde iremos criar uma classe TeacherStudent que herdará as propriedades e métodos da classe Student.
 
+```js
+function Student (name, email) {
+  this.name = name
+  this.email = email
+}
+
+Student.prototype.login = function login () {
+  return `${this.name} fez login.`
+}
+
+Student.prototype.comment = function comment () {
+  return `${this.name} comentou.`
+}
+
+function TeacherAssistant (name, email, scheduledWeekPosts) {
+  Student.call(this, name, email)
+  this.scheduledWeekPosts = scheduledWeekPosts
+}
+
+TeacherAssistant.prototype = Object.create(Student.prototype)
+
+TeacherAssistant.prototype.giveBadge = function giveBadge ({ name }) {
+  return `${this.name} deu uma medalha para ${name}`
+}
+
+const giulia = new Student('Giulia', 'giulia@gmail.com')
+const joaoAssistant = 
+  new TeacherAssistant('Joao', 'joaoAssistant@gmail.com', false)
+```
+
+Quando o método de herança de classes é feito através da palavra extends, o processo de cópia do prototype da classe pai é executado por baixo dos panos.
+
+## Factory Functions e composição de objetos
+Factory functions são todas as funções do javascript que não são classes e nem construtoras, **mas retornam um objeto**. A utilização dela no lugar de classes e funções construtoras pode ser preferível pela manutenção, legibilidade e escalabilidade do código, já que as classes podem desencadear em inúmeros problemas de herança, já que todos os objetos que herdam propriedades de outros, dependem da classe pai.
+
+Por mais que as classes tenham um leve ganho de performance, muitas vezes optar por elas pode comprometer o código em aplicações maiores, abaixo teremos um exemplo de como podemos utilizar as mesmas características das classes, como propriedade privada por exemplo, em factory functions.
+
+```js
+class User {
+  #counter = 0
+
+  constructor (name, email) {
+    this.name = name
+    this.email = email
+  }
+
+  incrementCounter () {
+    return ++this.#counter
+  }
+}
+
+const createUser = (name, email) => { 
+  let counter = 0
+  
+  return {
+    name, 
+    email,
+    incrementCounter: () => ++counter
+  }
+}
+
+const user = new User('Joao', 'joao@gmail.com')
+const user2 = createUser('Joao', 'joao@gmail.com')
+const user3 = createUser('Joao2', 'joao2@gmail.com')
+
+console.log(user, user2)
+console.log(user.incrementCounter())  // 1
+console.log(user.incrementCounter())  // 2
+console.log(user2.incrementCounter()) // 1
+console.log(user2.incrementCounter()) // 2
+console.log(user3.incrementCounter()) // 1
+console.log(user3.incrementCounter()) // 2
+```
+
+Outro exemplo que podemos trazer, é a forma de herdar propriedades de outros objetos, onde podemos contornar a hereditariedade através do spread operator, fazendo com que o código fique mais fácil de manipular, já que os objetos filhos não necessariamente precisam herdar todos os métodos e propriedades do objeto pai.
+
+```js
+class Obj {
+  first () {
+    return 1
+  }
+
+  second () {
+    return 'no'
+  }
+}
+
+class NewObj extends Obj {
+  third () {
+    return 3
+  }
+}
+```
+
+No código acima, necessariamente o novo objeto NewObj irá herdar a propriedade second, que não é desejada.
+
+```js
+const a = {
+  first () {
+    return 1
+  }
+}
+
+const b = {
+  second () {
+    return 'no'
+  }
+}
+
+const c = {
+  third () {
+    return 3
+  }
+}
+
+const newObj = {
+  ...a,
+  ...c
+}
+```
+
+Através da factory function, vemos que o novo objeto tem a flexibilidade de poder herdar apenas o método first e third. 

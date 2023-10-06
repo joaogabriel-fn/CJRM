@@ -10,7 +10,29 @@
   - Teste o método getColor do prototype dos carros.
 */
 
+const newCar = {
+  getColor () {
+    return this.color
+  }
+}
 
+let citroenC4 = Object.create(newCar)
+let peugeot3008 = Object.create(newCar)
+
+// console.log(citroenC4, peugeot3008)
+// console.log(Object.getPrototypeOf(citroenC4) === Object.getPrototypeOf(peugeot3008))
+
+citroenC4.color = 'black'
+peugeot3008.color = 'white'
+
+// console.log(citroenC4.getColor(), peugeot3008.getColor())
+/*
+OLOO = Objects linking to other objects
+
+  - Criar os objetos com Object.create(), passando como argumento o obj com método getColor
+  - Testar com o Object.getPrototypeOf() ou com obj.isPrototypeOf()
+  - Setar as propriedades de cores
+*/
 
 /*
   02
@@ -31,10 +53,19 @@ const movie = {
 }
 
 function getSummary () {
-  return `${this.title} foi dirigido por ${this.director} e tem ${this.starringRole} no papel principal.`
+  const { title, director, starringRole } = this
+  return `${title} foi dirigido por ${director} e tem ${starringRole} no papel principal.`
 }
 
-console.log(getSummary())
+// console.log(getSummary.call(movie))
+
+/*
+  - O erro ocorre pelo this não estar referenciando o objeto
+  - Runtime binding (conexao em tempo de execução), o valor do this é determinado dependendo de como a função é invocada
+  - Utilizar o call para alterar o valor do this, passando como argumento o objeto que sera referenciado quando usar this
+  - O método apply também pode ser utilizado no lugar do call. A única diferença entre o apply é o call é a forma que eles recebem argumento opcionais, enquanto o apply pode receber os argumentos em formato de array, o call recebe separadamente cada argumento.
+  - declarar uma const com destructuring no this, removendo o this da template string
+*/
 
 /*
   03
@@ -48,14 +79,23 @@ console.log(getSummary())
   - Descomente o código e crie a função.
 */
 
+const arrayToObj = arrays => arrays.reduce((acc, [key, value]) => {
+  acc[key] = value
+  return acc
+}, {})
+
+// console.log(
+//   arrayToObj([
+//     ['prop1', 'value1'], 
+//     ['prop2', 'value2'],
+//     ['prop3', 'value3']
+//   ])
+// )
+
 /*
-console.log(
-  arrayToObj([
-    ['prop1', 'value1'], 
-    ['prop2', 'value2'],
-    ['prop3', 'value3']
-  ])
-)
+  - Utilizar reduce
+  - destructuring no item do array, com key e value
+  - cada iteração do reduce, o accumulator irá criar uma nova propriedade com a key recebendo value e retornar acc
 */
 
 /*
@@ -64,8 +104,10 @@ console.log(
   - Refatore as classes abaixo para factory functions.
 */
 
+const concatenateZero = unit => unit < 10 ? `0${unit}` : unit
+
 const formatTimeUnits = units => units
-  .map(unit => unit < 10 ? `0${unit}` : unit)
+  .map(concatenateZero)
 
 const getTime = () => {
   const date = new Date()
@@ -79,52 +121,58 @@ const getTime = () => {
 const getFormattedTime = template => {
   const [hours, minutes, seconds] = getTime()
   const formattedTime = formatTimeUnits([hours, minutes, seconds])
+  const getTimeAsArray = (_, index) => formattedTime[index]
 
   return template
     .split(':')
-    .map((_, index) => formattedTime[index])
+    .map(getTimeAsArray)
     .join(':')
 }
 
-class Clock {
-  constructor ({ template }) {
-    this.template = template
-  }
+const makeClock = ({ template }) => ({
+  template,
 
   render () {
     const formattedTime = getFormattedTime(this.template)
     console.log(formattedTime)
-  }
+  },
 
   start () {
     const oneSecond = 1000
 
     this.render()
     this.timer = setInterval(() => this.render(), oneSecond)
-  }
+  },
 
   stop () {
     clearInterval(this.timer)
   }
-}
+})
 
-class ExtendedClock extends Clock {
-  constructor (options) {
-    super(options)
-    
-    const { precision = 1000 } = options
-    this.precision = precision
-  }
+const extendedClock = ({ template, precision = 1000 }) => ({
+  precision,
+
+  ...makeClock({ template }),
 
   start () {
-    this.render()
+    this.render(),
     this.timer = setInterval(() => this.render(), this.precision)
   }
-}
+})
 
-const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
+const newExtendedClock = extendedClock({ template: 'h:m:s', precision: 1000 })
 
-// clock.start()
+/*
+  - Para refatorar a classe clock:
+    - Manter o que já foi feito
+  - Para refatorar a classe extendedClock:
+    - extendedClock deve retornar diretamente um objeto
+    - precision deve receber um destructuring direto no parametro da função, com um default de 1000 (atribuir com short hand property)
+    - invocar dentro da função a makeClock junto ao spread operator, passando o template de argumento através do destructuring
+  - Eliminar funções anonimas
+    - formatTimeUnits: nomear callback do map
+    - getFormattedTime: nomear callback do map
+*/
 
 /*
   05
@@ -165,7 +213,59 @@ const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
         - download, com o valor 'table.csv'.
 */
 
+// const table = [...document.querySelectorAll('tr')]
+// const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
 
+// const csvString = table
+//   .map(tr => tr.cells)
+//   .map(item => [...item]
+//   .map(item => item.textContent))
+//   .reduce((acc, item) => acc += `${item} \n`, '')
+
+// exportTableBtn.addEventListener('click', e => {
+//   e.target.setAttribute('href', `data:text/csvcharset=utf-8,${encodeURIComponent(csvString)}`)
+//   e.target.setAttribute('download', 'table.csv')
+// })
+
+const tableRows = document.querySelectorAll('tr')
+const exportTableBtn = document.querySelector('[data-js="export-table-btn"]')
+
+const getCellsText = ({ textContent }) => textContent
+
+const getStringWithCommas = ({ cells }) => Array.from(cells)
+  .map(getCellsText)
+  .join(',')
+
+
+const generateCSVString = () => Array.from(tableRows)
+  .map(getStringWithCommas)
+  .join('\n')
+
+const setCSVDownload = CSVString => {
+  const CSVURI = `data:text/csvcharset=utf-8,${encodeURIComponent(CSVString)}`
+
+  exportTableBtn.setAttribute('href', CSVURI)
+  exportTableBtn.setAttribute('download', 'table.csv')
+}
+
+const exportTable = () => {
+  const CSVString = generateCSVString()
+  setCSVDownload(CSVString)
+}
+
+exportTableBtn.addEventListener('click', exportTable)
+
+/*
+  - obter a referencia das tr's numa const tableRows
+  - converter o node list obtido pela tablerows num array (spread operator ou Array.from())
+  - a partir do table rows, encadear um map q retorna cada row.cells
+  - converter cada row.cells em array e encadear outro map, que irá retornar cada célula da linha
+  - encadear um join(',') no map para juntar a string csv
+  - por fim, encadear um join na expressao toda passando como argumento o separador de linha '\n'
+  - encapsular o callback do eventlistener numa nova const exportTable
+  - separar a expressão que gera o CSV da exportTable
+  - eliminar funções anonimais existentes dentro de cada map
+*/
 
 /*
   06
@@ -180,7 +280,9 @@ const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
     essa aplicação.
 */
 
+/*
 
+*/
 
 /*
   07
@@ -223,3 +325,81 @@ const clock = new ExtendedClock({ template: 'h:m:s', precision: 1000 })
   PS: o desafio aqui é você implementar essa aplicação sozinho(a), antes 
   de ver as próximas aulas, ok? =)
 */
+// const firstCurrency = document.querySelector('[data-js="currency-one"]')
+// const secondCurrency = document.querySelector('[data-js="currency-two"]')
+// const valueInput = document.querySelector('[data-js="currency-one-times"]')
+// const valueOutput = document.querySelector('[data-js="converted-value"]')
+// const conversionPrecision = document.querySelector('[data-js="conversion-precision"]')
+
+// const key = 'a74dcf76a089efb012856f5e'
+// const url = `https://v6.exchangerate-api.com/v6/${key}/latest/USD`
+
+// const fetchCurrencyAPI = async url => {
+//   try {
+//     const response = await fetch(url)
+
+//     if (!response.ok) {
+//       throw Error('Não foi possível obter os dados')
+//     }
+    
+//     const { conversion_rates } = await response.json()
+
+//     return conversion_rates
+//   } catch ({ name, message }) {
+//     alert(`${name}: ${message}`)
+//   }
+// }
+
+// const insertCurrencyList = async () => {
+//   const currencyObj = await fetchCurrencyAPI(url)
+//   const currencies = Object.keys(currencyObj)
+
+//   currencies.forEach(currency => {
+//     currency === 'USD'
+//       ? firstCurrency.innerHTML += 
+//           `<option value="${currency}" selected>${currency}</option>`
+//       : firstCurrency.innerHTML += 
+//           `<option value="${currency}">${currency}</option>`
+//     currency === 'BRL'
+//       ? secondCurrency.innerHTML += 
+//           `<option value="${currency}" selected>${currency}</option>`
+//       : secondCurrency.innerHTML += 
+//           `<option value="${currency}">${currency}</option>`
+//   })
+// }
+
+// const convertCurrency = async (firstCurrency, secondCurrency, inputValue) => {
+//   const currencyObj = await fetchCurrencyAPI(url)
+//   const currencyMultiplier = 
+//   currencyObj[secondCurrency] / currencyObj[firstCurrency]
+
+//   return (currencyMultiplier * inputValue).toFixed(2)
+// }
+
+// const getCurrencyPrecision = async (firstCurrency, secondCurrency) => {
+//   const currencyObj = await fetchCurrencyAPI(url)
+//   return `1 ${firstCurrency} = ${(currencyObj[secondCurrency] / currencyObj[firstCurrency]).toFixed(2)} ${secondCurrency}`
+// }
+
+// firstCurrency.addEventListener('change', async e => {
+//   const currentCurrency = e.target.value
+
+//   valueOutput.textContent = await convertCurrency(currentCurrency, secondCurrency.value, valueInput.value)
+//   conversionPrecision.textContent = await getCurrencyPrecision(currentCurrency, secondCurrency.value)
+// })
+// secondCurrency.addEventListener('change', async e => {
+//   const currentCurrency = e.target.value
+
+//   valueOutput.textContent = await convertCurrency(firstCurrency.value, currentCurrency, valueInput.value)
+//   conversionPrecision.textContent = await getCurrencyPrecision(firstCurrency.value, currentCurrency)
+// })
+
+// valueInput.addEventListener('input', async e => {
+//   const inputValue = e.target.value
+
+//   valueOutput.textContent = await convertCurrency(firstCurrency.value, secondCurrency.value, inputValue)
+//   conversionPrecision.textContent = await getCurrencyPrecision(firstCurrency.value, secondCurrency.value)
+// })
+
+// insertCurrencyList()
+
