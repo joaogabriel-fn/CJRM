@@ -17,10 +17,16 @@
 */
 
 const numbers = [50, 100, 50]
+const numbers2 = [50, 50]
+const numbers4 = [50, 100, 50, 200]
 
-const sum = (x, y, z) => x + y + z
+// const sum = (x, y, z) => x + y + z
 
-console.log(sum(...numbers))
+const sum = (...params) => params.reduce((acc, param) => acc + param, 0)
+
+// console.log(sum(...numbers))
+// console.log(sum(...numbers2))
+// console.log(sum(...numbers4))
 
 /*
   02
@@ -35,8 +41,51 @@ console.log(sum(...numbers))
   - Para que o item do accordion seja "ativado" ao clicar, faça um toogle 
     utilizando a classe "active".
 */
+// const accordionItemsEl = document.querySelectorAll('.accordion-item')
 
+// accordionItemsEl.forEach(item => {
+//   item.addEventListener('click', () => {
+//     Array.from(item.children)
+//       .forEach(children => children.classList.toggle('active'))
+//   })
+// })
 
+const accordion = document.querySelector('[data-js="accordion"]')
+
+const closeAccordionItem = accordionHeaderToBeClosed => {
+  const accordionHeaderId = accordionHeaderToBeClosed.dataset.accordionHeader
+  const accordionBodyToBeClosed = 
+    document.querySelector(`[data-accordion-body="${accordionHeaderId}"]`)
+
+  accordionHeaderToBeClosed.classList.remove('active')  
+  accordionBodyToBeClosed.classList.remove('active')
+}
+
+const handleAccordionClick = e => {
+  const accordionHeaderId = e.target.dataset.accordionHeader
+  const clickedAccordionHeader = 
+    document.querySelector(`[data-accordion-header="${accordionHeaderId}"]`)
+  const accordionItemToBeOpened = 
+    document.querySelector(`[data-accordion-body="${accordionHeaderId}"]`)
+
+  const accordionHeaderToBeClosed = Array
+    .from(document.querySelectorAll('[data-js="accordion-header"]'))
+    .filter(accordionHeader => accordionHeader !== clickedAccordionHeader)
+    .find(accordionHeader => accordionHeader.classList.contains('active'))
+
+  if (!e.target.dataset.accordionHeader) {
+    return
+  }
+
+  if (accordionHeaderToBeClosed) {
+    closeAccordionItem(accordionHeaderToBeClosed)
+  }
+  
+  clickedAccordionHeader.classList.toggle('active')
+  accordionItemToBeOpened.classList.toggle('active')
+}
+
+accordion.addEventListener('click', handleAccordionClick)
 
 /*
   03
@@ -54,14 +103,49 @@ console.log(sum(...numbers))
     - Teste o método logCarInfo nos dois objetos.
 */
 
+// const carMaker = ({name, color}) => {
+//   const newCar = {
+//     name,
+//     color
+//   }
+//   Object.setPrototypeOf(newCar, volkswagenProto)
+//   return newCar
+// }
+
 const volkswagenProto = {
   logCarInfo () {
     console.log(`Volkswagen ${this.name}, cor ${this.color}.`)
   }
 }
 
-// const amarok = carMaker({ name: 'Amarok', color: 'preta' })
-// const jetta = carMaker({ name: 'Jetta', color: 'prata' })
+const toyotaProto = {
+  logCarInfo () {
+    console.log(`Toyota ${this.name}, cor ${this.color}.`)
+  }
+}
+
+const carMaker = ({ name, color }, carProto) => {
+  const car = Object.create(carProto)
+
+  car.name = name
+  car.color = color
+
+  return car
+}
+
+const amarok = carMaker({ name: 'Amarok', color: 'preta' }, volkswagenProto)
+const jetta = carMaker({ name: 'Jetta', color: 'prata' }, volkswagenProto)
+const corolla = carMaker({ name: 'Corolla', color: 'preta' }, toyotaProto)
+
+// console.log(volkswagenProto.isPrototypeOf(amarok) && volkswagenProto.isPrototypeOf(jetta))
+
+// amarok.logCarInfo()
+// jetta.logCarInfo()
+// corolla.logCarInfo()
+
+// console.log(Object.getPrototypeOf(amarok) === Object.getPrototypeOf(jetta))
+// amarok.logCarInfo()
+// jetta.logCarInfo()
 
 /*
   04
@@ -79,9 +163,21 @@ const volkswagenProto = {
 
 const aString = 'O Curso de JavaScript Roger Melo funciona com turmas fechadas, abertas poucas vezes e é focado em quem ainda não é fluente em JS. Ou seja, quem não consegue construir aplicações web com JavaScript puro.'
 
+// const getIndexesOfCharacter = (aString, char) => [...aString]
+//   .reduce((acc, item, index) => {
+//     if (item === char) {
+//       acc.push(index)
+//       return acc
+//     }
+//     return acc
+//   }, [])
 
+const getIndexesOfCharacter = (string, character) => 
+  [...string].reduce((acc, item, index) => 
+    item.toLowerCase() === character.toLowerCase() ? [...acc, index] : acc, [])
 
 // console.log(getIndexesOfCharacter(aString, 'b'))
+// console.log(getIndexesOfCharacter(aString, 'o'))
 
 /*
   05
@@ -126,7 +222,58 @@ const aString = 'O Curso de JavaScript Roger Melo funciona com turmas fechadas, 
       ela já tem + 1 e faça characterIndex receber 0.
 */
 
+// const messages = ['sou fluente em JS', 'construo aplicações web com JS puro']
 
+// let messageIndex = 0
+// let characterIndex = 0
+// let currentMessage = ''
+// let currentCharacters = ''
+
+// const type = () => {
+//   if (messageIndex === messages.length) {
+//     messageIndex = 0
+//   }
+
+//   currentMessage = messages[messageIndex]
+//   currentCharacters = currentMessage.slice(0, characterIndex)
+//   characterIndex++
+//   console.log(currentCharacters)
+//   document.querySelector('[data-js="typing"]').innerHTML = currentCharacters
+
+//   if (currentCharacters === currentMessage) {
+//     messageIndex++
+//     characterIndex = 0
+//   }
+// }
+
+// setInterval(type, 70)
+const typing = document.querySelector('[data-js="typing"]')
+
+const messages = ['sou fluente em JS', 'construo aplicações web com JS puro']
+
+let messageIndex = 0
+let characterIndex = 0
+let currentMessage = ''
+let currentCharacters = ''
+
+const type = () => {
+  const shouldTypeFirstMessage = messageIndex === messages.length
+  if (shouldTypeFirstMessage) {
+    messageIndex = 0
+  }
+
+  currentMessage = messages[messageIndex]
+  currentCharacters = currentMessage.slice(0, characterIndex++)
+  typing.textContent = currentCharacters
+
+  const shouldChangeMessageToBeTyped = currentCharacters === currentMessage
+  if (shouldChangeMessageToBeTyped) {
+    messageIndex++
+    characterIndex = 0
+  }
+}
+
+setInterval(type, 100)
 
 /*
   06
@@ -149,7 +296,43 @@ const wrongDataFormat = [
   'azul-P'
 ]
 
+const correctDataFormat = wrongDataFormat.reduce((acc, colorAndSize) => {
+  const [color, size] = colorAndSize.split('-')
 
+  acc[color] = acc[color] || {}
+  acc[color][size] = acc[color][size] || 0
+  acc[color][size] += 1
+
+  console.log(acc)
+  return acc
+}, {})
+
+// const rightDataFormat = wrongDataFormat
+//   .map(item => item.split('-'))
+//   .reduce((acc, [key, value]) => {
+//     if (acc[key]) {
+//       if (acc[key][value]) {
+//         acc[key][value]++
+
+//         return acc
+//       }
+
+//       acc[key] = {
+//         ...acc[key],
+//         [value]: 1
+//       }
+
+//       return acc
+//     }
+
+//     acc[key] = {
+//       [value]: 1
+//     }
+
+//     return acc
+//   }, {})
+
+// console.log(rightDataFormat)
 
 /*
   {

@@ -3,22 +3,25 @@
   
   - Atualmente, a invocação da função abaixo está retornando 
     "50,100,50undefinedundefined";
-  - Descubra o que o código abaixo está fazendo e faça a invocação da função   
+  - Descubra o que o código abaixo está fazendo e faça a invocação da função 
     retornar 200;
   - Não use a sintaxe item[index].
 */
 
 const numbers = [50, 100, 50]
 
-// const sum = ([x, y, z]) => x + y + z
-const sum = (x, y, z) => x + y + z
+// const sum = (x, y, z) => x + y + z
 
-// console.log(sum(...numbers))
+
+console.log(sum(numbers))
 
 /*
   02
 
-4
+  - Declare uma const que armazena seu primeiro nome com todas as letras 
+    minúsculas;
+  - Utilizando (também) o spread operator, exiba no console o seu nome com 
+    apenas a primeira letra maiúscula.
 */
 
 const myName = 'joao'
