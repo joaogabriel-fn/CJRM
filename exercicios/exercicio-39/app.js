@@ -298,41 +298,15 @@ const wrongDataFormat = [
 
 const correctDataFormat = wrongDataFormat.reduce((acc, colorAndSize) => {
   const [color, size] = colorAndSize.split('-')
-
+  
   acc[color] = acc[color] || {}
   acc[color][size] = acc[color][size] || 0
   acc[color][size] += 1
 
-  console.log(acc)
   return acc
 }, {})
 
-// const rightDataFormat = wrongDataFormat
-//   .map(item => item.split('-'))
-//   .reduce((acc, [key, value]) => {
-//     if (acc[key]) {
-//       if (acc[key][value]) {
-//         acc[key][value]++
-
-//         return acc
-//       }
-
-//       acc[key] = {
-//         ...acc[key],
-//         [value]: 1
-//       }
-
-//       return acc
-//     }
-
-//     acc[key] = {
-//       [value]: 1
-//     }
-
-//     return acc
-//   }, {})
-
-// console.log(rightDataFormat)
+console.log(correctDataFormat)
 
 /*
   {
