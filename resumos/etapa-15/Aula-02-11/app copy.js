@@ -19,35 +19,29 @@ const formAddGame = document.querySelector('[data-js="add-game-form"]')
 const gamesList = document.querySelector('[data-js="games-list"]')
 const buttonUnsub = document.querySelector('[data-js="unsub"]')
 
-const getLiTemplate = (doc) => {
-  const { title, developedBy, createdAt, id } = doc.data()
-  const date = createdAt.toDate()
-
-  return (
-    `<li data-id="${id}" class="my-4">
-      <h5>${title}</h5>
-      
-      <ul>
-        <li>Desenvolvido por ${developedBy}</li>
-        ${createdAt 
-            ? `<li>Adicionado no banco em ${Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year:'numeric', hour: '2-digit', minute: '2-digit' }).format(date)}</li>` 
-            : ''}
-      </ul>
-
-      <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
-    </li>`
-  )
-}
-
 const unsubscribe = onSnapshot(collectionGames, querySnapshot => {
   if (!querySnapshot.metadata.hasPendingWrites) {
     const gamesLis = querySnapshot.docs.reduce((acc, doc) => {
-      acc += getLiTemplate(doc)
+      const { title, developedBy, createdAt } = doc.data()
+  
+      acc += `<li data-id="${doc.id}" class="my-4">
+        <h5>${title}</h5>
+        
+        <ul>
+          <li>Desenvolvido por ${developedBy}</li>
+          ${createdAt 
+              ? `<li>Adicionaod no banco em ${createdAt.toDate()}</li>` 
+              : ''}
+        </ul>
+  
+        <button data-remove="${doc.id}" class="btn btn-danger btn-sm">Remover</button>
+      </li>`
   
       return acc
     }, '')
   
     gamesList.innerHTML = gamesLis
+    console.log('Manipulação Executada')
   }
 })
 

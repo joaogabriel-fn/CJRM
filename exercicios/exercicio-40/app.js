@@ -5,7 +5,7 @@
   valores no console no decorrer dessa bateria de exercícios.
 */
 
-
+const log = (...infoToLog) => console.log(...infoToLog)
 
 /*
   02
@@ -24,9 +24,19 @@ const objs = [
 
 const propToRemove = 'b'
 
+const removeProp = (propToRemove, objs) => {
+  const modifiedObjs = objs.map(obj => ({...obj}))
 
+  modifiedObjs.forEach(obj => {
+    obj[propToRemove]
+      ? delete obj[propToRemove]
+      : {}
+  })
 
-// removeProp(propToRemove, objs)
+  return log(modifiedObjs)
+}
+
+// removeProp(propToRemove, objs), objs
 
 /*
 [
@@ -62,9 +72,14 @@ const orders = [
   { username: '_rick', status: 'shipped', price: 73.65 }
 ]
 
+const getStatusCount = (orders) => 
+  orders.reduce((acc, { status }) => {
+    acc[status] = acc[status] || 0
+    acc[status] += 1
+    return acc
+  }, {})
 
-
-// getStatusCount(orders)
+log(getStatusCount(orders))
 
 /*
 {
