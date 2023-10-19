@@ -7,6 +7,8 @@
 
 const log = (...infoToLog) => console.log(...infoToLog)
 
+// log('oi')
+
 /*
   02
 
@@ -24,19 +26,23 @@ const objs = [
 
 const propToRemove = 'b'
 
-const removeProp = (propToRemove, objs) => {
-  const modifiedObjs = objs.map(obj => ({...obj}))
+// const removeProp = (propToRemove, objs) => {
+//   const modifiedObjs = objs.map(obj => ({...obj}))
 
-  modifiedObjs.forEach(obj => {
-    obj[propToRemove]
-      ? delete obj[propToRemove]
-      : {}
-  })
+//   modifiedObjs.forEach(obj => {
+//     obj[propToRemove]
+//       ? delete obj[propToRemove]
+//       : {}
+//   })
 
-  return log(modifiedObjs)
-}
+//   return log(modifiedObjs)
+// }
 
-// removeProp(propToRemove, objs), objs
+const removeProp = (propToRemove, objs) => 
+  objs.map(({ [propToRemove]:_, ...obj }) => obj)
+
+// log(removeProp(propToRemove, objs)[0] === objs[0])
+// log(removeProp(propToRemove, objs))
 
 /*
 [
@@ -72,12 +78,16 @@ const orders = [
   { username: '_rick', status: 'shipped', price: 73.65 }
 ]
 
-const getStatusCount = (orders) => 
-  orders.reduce((acc, { status }) => {
-    acc[status] = acc[status] || 0
-    acc[status] += 1
-    return acc
-  }, {})
+// const getStatusCount = (orders) => 
+//   orders.reduce((acc, { status }) => {
+//     acc[status] = (acc[status] || 0) + 1
+//     return acc
+//   }, {})
+
+const getStatusCount = orders => orders.reduce((acc, { status }) => ({
+  ...acc,
+  [status]: (acc[status] || 0) + 1
+}), {})
 
 log(getStatusCount(orders))
 
